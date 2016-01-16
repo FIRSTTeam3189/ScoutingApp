@@ -1,0 +1,3 @@
+[submodule "ScoutingCommon"]
+	path = ScoutingCommon
+	url = https://github.com/FIRSTTeam3189/ScoutingCommon.git
