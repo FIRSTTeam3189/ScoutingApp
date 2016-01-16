@@ -16,10 +16,13 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		ScoutingApp\ScoutingApp.projitems*{716883b1-4bce-4076-8f4a-ba2ce493e4b5}*SharedItemsImports = 4
+		ScoutingCommon\ScoutingModels.projitems*{716883b1-4bce-4076-8f4a-ba2ce493e4b5}*SharedItemsImports = 4
 		ScoutingApp\ScoutingApp.projitems*{24ecb4a4-7a6d-4559-9d95-d307e3aca0f4}*SharedItemsImports = 13
 		ScoutingApp\ScoutingApp.projitems*{d950a087-ea25-41f2-8ab0-9e8dab275ccf}*SharedItemsImports = 4
+		ScoutingCommon\ScoutingModels.projitems*{d950a087-ea25-41f2-8ab0-9e8dab275ccf}*SharedItemsImports = 4
 		ScoutingCommon\ScoutingModels.projitems*{d062149b-a28a-4928-a8db-9d807289304e}*SharedItemsImports = 13
 		ScoutingApp\ScoutingApp.projitems*{c8aac68e-b807-4331-bb2b-761f81ce94c7}*SharedItemsImports = 4
+		ScoutingCommon\ScoutingModels.projitems*{c8aac68e-b807-4331-bb2b-761f81ce94c7}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Ad-Hoc|Any CPU = Ad-Hoc|Any CPU

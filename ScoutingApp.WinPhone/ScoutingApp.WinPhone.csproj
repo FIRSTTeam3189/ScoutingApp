@@ -182,6 +182,7 @@
     </Reference>
   </ItemGroup>
   <Import Project="..\ScoutingApp\ScoutingApp.projitems" Label="Shared" Condition="Exists('..\ScoutingApp\ScoutingApp.projitems')" />
+  <Import Project="..\ScoutingCommon\ScoutingModels.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
