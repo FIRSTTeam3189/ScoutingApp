@@ -13,6 +13,17 @@ namespace ScoutingApp.Models
     {
         public ObservableCollection<Team> Teams { get; set; }
         public ObservableCollection<EventGrouping> EventGroupings { set; get; }
+        private Team _myTeam;
+        public Team MyTeam { get { return _myTeam; }
+            set
+            {
+                if (value != _myTeam)
+                {
+                    _myTeam = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

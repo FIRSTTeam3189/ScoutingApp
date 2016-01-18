@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using ScoutingModels.Data;
 using ScoutingModels.Test;
 
 namespace ScoutingApp.Data
 {
-    public class EventGrouping
+    public class EventGrouping : ObservableCollection<Event>
     {
         public int Week { get; set; }
 
@@ -34,13 +35,15 @@ namespace ScoutingApp.Data
             }
         }
 
-        public ICollection<Event> Events { get; set; }
-
-        public EventGrouping(int week, ICollection<Event> events)
+        public EventGrouping(int week, IEnumerable<Event> events)
         {
             events.IsNotNull();
-            Events = events;
             Week = week;
+            foreach (var e in events)
+            {
+                e.IsNotNull();
+                Add(e);
+            }
         }
     }
 }
