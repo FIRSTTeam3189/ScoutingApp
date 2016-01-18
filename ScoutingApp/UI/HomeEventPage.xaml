@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ScoutingApp.UI.HomeEventPage">
+  <ListView x:Name="EventListView" IsGroupingEnabled="True" GroupDisplayBinding="{Binding GroupName}" GroupShortNameBinding="{Binding ShortName}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <TextCell Text="{Binding Location}" Detail="{Binding Type}" TextColor="White" DetailColor="Lime"/>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
+</ContentPage>
