@@ -16,24 +16,31 @@ namespace ScoutingApp.UI
 	{
         private BlueAllianceClient _client = new BlueAllianceClient();
         public HomePageModel Model { get; set; }
+
+        HomeEventPage _eventPage = new HomeEventPage() {Title = "Events"};
+        HomeTeamPage _teamPage = new HomeTeamPage() {Title = "Teams"};
+        HomeMyTeamPage _myTeamPage = new HomeMyTeamPage() {Title = "My Team"};
+
 		public HomePage ()
 		{
-			InitializeComponent ();
-            
+			InitializeComponent ();  
+            Children.Add(_eventPage);
+            Children.Add(_teamPage);
+            Children.Add(_myTeamPage);  
 		}
 
-
-	    protected override async void OnAppearing()
-	    {
-	        base.OnAppearing();
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
 
             Model = new HomePageModel();
-            BindingContext = Model;
-	        var events = new List<Event>(await _client.GetEvents(2016));
-	        Model.EventGroupings =
-	            new ObservableCollection<EventGrouping>(events.Select((e, i) => new {IndexPlace = i/10, Event = e})
-	                .GroupBy(x => x.IndexPlace)
-	                .Select(x => new EventGrouping(x.Key, x.ToList().Select(y => y.Event))));
-	    }
-	}
+            var events = new List<Event>(await _client.GetEvents(2016));
+            Model.EventGroupings =
+                new ObservableCollection<EventGrouping>(events.Select((e, i) => new { IndexPlace = i / 10, Event = e })
+                    .GroupBy(x => x.IndexPlace)
+                    .Select(x => new EventGrouping(x.Key, x.ToList().Select(y => y.Event))));
+
+            _eventPage.SetItemSource(Model.EventGroupings);
+        }
+    }
 }

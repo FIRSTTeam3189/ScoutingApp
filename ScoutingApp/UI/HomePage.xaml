@@ -3,18 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ScoutingApp.UI.HomePage"
   x:Name="Page">
-             <TabbedPage.Children>
-               <ContentPage Title="Events">
-                 <ListView ItemsSource="{Binding EventGroupings}" IsGroupingEnabled="True" GroupDisplayBinding="{Binding GroupName}" GroupShortNameBinding="{Binding ShortName}">
-                   <ListView.ItemTemplate>
-                     <DataTemplate>
-                       <TextCell Text="{Binding Location}" Detail="{Binding Type}"/>
-                     </DataTemplate>
-                   </ListView.ItemTemplate>
-                 </ListView>
-               </ContentPage>
-               <ContentPage Title="Teams"></ContentPage>
-               <ContentPage Title="My Team"></ContentPage>
-             </TabbedPage.Children>
+             
 
 </TabbedPage>
