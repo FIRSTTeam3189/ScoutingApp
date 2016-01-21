@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ScoutingApp.Data;
 using ScoutingApp.Models;
 using ScoutingModels.Data;
+using ScoutingModels.Extentions;
 using ScoutingModels.Scrubber;
 using Xamarin.Forms;
 
@@ -35,10 +36,17 @@ namespace ScoutingApp.UI
 
             Model = new HomePageModel();
             var events = new List<Event>(await _client.GetEvents(2016));
+            var eventsWithStartDate = events.Where(x => x.StartDate != null).ToList();
+            var eventsWithoutStartDate = events.Where(x => x.StartDate == null);            
+            var soonestWeek = (eventsWithStartDate.OrderBy(x => x.StartDate).First().StartDate ?? DateTime.Now).GetWeekNumber();
+             
             Model.EventGroupings =
-                new ObservableCollection<EventGrouping>(events.Select((e, i) => new { IndexPlace = i / 10, Event = e })
+                new ObservableCollection<EventGrouping>(eventsWithStartDate.Select((e) => new { IndexPlace = (e.StartDate ?? DateTime.Now).GetWeekNumber() - soonestWeek, Event = e })
                     .GroupBy(x => x.IndexPlace)
-                    .Select(x => new EventGrouping(x.Key, x.ToList().Select(y => y.Event))));
+                    .Select(x => new EventGrouping(x.Key, x.ToList().Select(y => y.Event))).OrderBy(x => x.Week));
+
+            Model.EventGroupings.Add(new EventGrouping(0, eventsWithoutStartDate));
+            
 
             _eventPage.SetItemSource(Model.EventGroupings);
         }
