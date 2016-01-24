@@ -4,7 +4,7 @@
              xmlns:widget="clr-namespace:Android.Widget;assembly=Mono.Android"
              x:Class="ScoutingApp.UI.HomeMyTeamPage">
   <StackLayout>
-    <StackLayout>
+    <StackLayout Orientation="Horizontal">
       <Label Text="{Binding Number}"/>
       <Label Text="{Binding Name}"/>
       </StackLayout>
