@@ -3,4 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ScoutingApp.UI.HomeTeamPage">
 	<Label Text="Teams Page" VerticalOptions="Center" HorizontalOptions="Center" />
+  <ListView>
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <TextCell Text="{Binding Number}"
+          Detail="{Binding Name}"/>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
 </ContentPage>
