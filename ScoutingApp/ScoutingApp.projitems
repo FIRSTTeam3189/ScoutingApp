@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\EventGrouping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\EventRanking.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\HomePageModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\HomeEventPage.xaml.cs">
       <DependentUpon>HomeEventPage.xaml</DependentUpon>

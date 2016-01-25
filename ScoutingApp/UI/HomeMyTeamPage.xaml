@@ -3,16 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:widget="clr-namespace:Android.Widget;assembly=Mono.Android"
              x:Class="ScoutingApp.UI.HomeMyTeamPage">
-  <StackLayout>
+  <StackLayout x:Name="Layout">
     <StackLayout Orientation="Horizontal">
-      <Label Text="{Binding Number}"/>
-      <Label Text="{Binding Name}"/>
+      <Label Text="3189"/>
+      <Label Text="Circuit Breakers"/>
       </StackLayout>
     <Label Text ="Events"/>
     <ListView x:Name="EventsListView">
       <ListView.ItemTemplate>
         <DataTemplate>
-          <TextCell text="{Binding Name}" Detail="{Binding Location}"/>
+          <TextCell Text="{Binding Name}" Detail="{Binding Location}"/>
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
@@ -20,7 +20,7 @@
     <ListView x:Name="RankListView">
       <ListView.ItemTemplate>
         <DataTemplate>
-          <TextCell Text="{Binding Name}" Detail="{Binding Rank}"/>
+          <TextCell Text="{Binding Name}" Detail="{Binding Ranking}"/>
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>
