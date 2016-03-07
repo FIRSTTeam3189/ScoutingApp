@@ -27,6 +27,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\ConfirmPerformancePage.xaml.cs">
       <DependentUpon>ConfirmPerformancePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\MatchesPage.xaml.cs">
+      <DependentUpon>MatchesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UI\CreateMatchPage.xaml.cs">
+      <DependentUpon>CreateMatchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Local\Match.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Local\Event.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Local\EventTeam.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Utility\" />
@@ -42,6 +51,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\ConfirmPerformancePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\MatchesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\CreateMatchPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

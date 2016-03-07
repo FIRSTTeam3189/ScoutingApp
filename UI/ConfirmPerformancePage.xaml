@@ -10,7 +10,6 @@
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
-		<Button HorizontalOptions="FillAndExpand" HeightRequest="50" BackgroundColor="Lime" Text="Confirm" />
 		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

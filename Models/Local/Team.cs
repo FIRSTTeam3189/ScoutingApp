@@ -9,7 +9,7 @@ namespace Scouty.Models.Local
 	[Table("Teams")]
 	public class Team
 	{
-		[PrimaryKey, AutoIncrement, Column("_team")]
+		[PrimaryKey, AutoIncrement, Column("_id")]
 		public int Id { get; set; }
 
 		[Column("team_number"), Unique]
@@ -20,6 +20,9 @@ namespace Scouty.Models.Local
 
 		[OneToMany(CascadeOperations = CascadeOperation.All), Column("robot_performances")]
 		public List<RobotPerformance> Performances { get; set; }
+
+		[ManyToMany(typeof(EventTeam), CascadeOperations = CascadeOperation.All), Column("events")]
+		public List<Event> Events { get; set; }
 	}
 }
 

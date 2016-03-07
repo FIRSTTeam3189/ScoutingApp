@@ -26,6 +26,7 @@ namespace Scouty
 		protected override void OnStart ()
 		{
 			Test.TestCreate ();
+			Test.TestCreateEvent ();
 
 			// Test Register
 			Task.Factory.StartNew(async () => {
@@ -50,7 +51,7 @@ namespace Scouty
 					logger.Info("Logged in!");
 					logger.Info("Getting events!");
 
-					var teams = await EventManager.MatchesForEvent("cada", 2015);
+					var teams = await EventManager.MatchesForEvent("casa", 2015);
 
 					if (teams != null)
 						foreach (var team in teams){

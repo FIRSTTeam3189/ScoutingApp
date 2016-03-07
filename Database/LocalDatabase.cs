@@ -4,6 +4,7 @@ using Scouty.Models.Local;
 
 using SQLite.Net;
 using SQLite.Net.Interop;
+using SQLiteNetExtensions.Extensions;
 
 namespace Scouty.Database
 {
@@ -28,6 +29,9 @@ namespace Scouty.Database
 			Connection.CreateTable<Team>();
 			Connection.CreateTable<RobotPerformance> ();
 			Connection.CreateTable<RobotEvent> ();
+			Connection.CreateTable<EventTeam> ();
+			Connection.CreateTable<Event> ();
+			Connection.CreateTable<Match> ();
 		}
 
 		/// <summary>
@@ -36,9 +40,13 @@ namespace Scouty.Database
 		/// <returns>The team, if its in the DB.</returns>
 		/// <param name="teamNumber">Team number.</param>
 		public Team QueryTeam(int teamNumber){
-			return (from t in Connection.Table<Team> ()
-			        where t.TeamNumber == teamNumber
-			        select t).FirstOrDefault ();
+			var team = (from t in Connection.Table<Team> ()
+			            where t.TeamNumber == teamNumber
+			            select t).FirstOrDefault ();
+			if (team != null)
+				Connection.GetChildren<Team> (team);
+
+			return team;
 		}
 
 		/// <summary>
@@ -52,6 +60,37 @@ namespace Scouty.Database
 			return (from t in Connection.Table<RobotPerformance> ()
 			        where t.EventCode == eventCode && t.MatchNumber == matchNumber && t.MatchType == type
 			        select t);
+		}
+
+		/// <summary>
+		/// Gets all of the matches at an event.
+		/// Will throw an exception if the event doesn't exist
+		/// </summary>
+		/// <returns>The matches.</returns>
+		/// <param name="eventCode">Event code.</param>
+		/// <param name = "year">Year of event</param>
+		public IEnumerable<Match> QueryMatches(string eventCode, int year){
+			var ev = Connection.Table<Event> ().Where(x => x.EventCode == eventCode && x.Year == year).First();
+			Connection.GetChildren<Event> (ev);
+			return ev.Matches;
+		}
+
+		/// <summary>
+		/// Gets the event if it exists
+		/// </summary>
+		/// <returns>The event.</returns>
+		/// <param name="eventCode">Event code.</param>
+		/// <param name="year">Year.</param>
+		/// <param name = "readTeamsInfo">Reads all of the info stored about the team also</param>
+		public Event QueryEvent(string eventCode, int year, bool readTeamsInfo = false){
+			var ev = (from e in Connection.Table<Event> ()
+			        where e.Year == year && e.EventCode == eventCode
+			        select e).FirstOrDefault ();
+
+			if (ev != null)
+				Connection.GetChildren<Event> (ev, readTeamsInfo);
+
+			return ev;
 		}
 	}
 }

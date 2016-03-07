@@ -30,11 +30,5 @@ namespace Scouty.Models.Local
 		[OneToMany(CascadeOperations = CascadeOperation.All), Column("events")]
 		public List<RobotEvent> Events { get; set; }
 	}
-
-	public enum MatchType {
-		Practice = 1,
-		Qualification = 2,
-		Playoff = 3
-	}
 }
 

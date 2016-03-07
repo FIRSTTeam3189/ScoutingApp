@@ -25,6 +25,11 @@ namespace Scouty.UI
 			
 			EventList.ItemsSource = Groups;
 			EventList.ItemSelected += SelectedEvent;
+			ToolbarItems.Add (new ToolbarItem ("Submit", null, Confirm));
+		}
+
+		void Confirm(){
+			
 		}
 
 		public async void SelectedEvent(object sender, SelectedItemChangedEventArgs e){

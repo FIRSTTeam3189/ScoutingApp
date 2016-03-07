@@ -1,0 +1,58 @@
+﻿using System;
+
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
+using System.Collections.Generic;
+
+namespace Scouty.Models.Local
+{
+	[Table("Matches")]
+	public class Match
+	{
+		[PrimaryKey, AutoIncrement, Column("_id")]
+		public int Id { get; set; }
+
+		[Column("match_number")]
+		public int MatchNumber { get; set; }
+
+		[Column("match_type")]
+		public MatchType MatchType { get; set; }
+
+		[ForeignKey(typeof(Event)), Column("event_id")]
+		public int EventId { get; set; }
+
+		[Column("red_one")]
+		public int RedOne { get; set; }
+
+		[Column("red_two")]
+		public int RedTwo { get; set; }
+
+		[Column("red_three")]
+		public int RedThree { get; set; }
+
+		[Column("blue_one")]
+		public int BlueOne { get; set; }
+
+		[Column("blue_two")]
+		public int BlueTwo { get; set; }
+
+		[Column("blue_three")]
+		public int BlueThree { get; set; }
+
+		[Column("start_time")]
+		public DateTime StartTime { get; set; }
+
+		[Column("has_graded")]
+		public bool HasGraded { get; set; }
+	}
+
+	public enum MatchType {
+		Practice = 1,
+		Qualification = 2,
+		OctoFinal = 3,
+		QuarterFinal = 4,
+		SemiFinal = 5,
+		Final = 6
+	}
+}
+
