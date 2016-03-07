@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Scouty", "Scouty.shproj", "{C75ABDA2-41FC-40D8-B6A4-169A71AD037C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scouty.iOS", "iOS\Scouty.iOS.csproj", "{98BA403C-5B59-4307-8ADB-477D4C05EBD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scouty.Droid", "Droid\Scouty.Droid.csproj", "{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|iPhone.Build.0 = Release|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2F82EABF-CCB9-4145-85D9-9B9DB11AF6F9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|iPhone.Build.0 = Debug|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|Any CPU.ActiveCfg = Release|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|Any CPU.Build.0 = Release|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|iPhone.ActiveCfg = Release|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|iPhone.Build.0 = Release|iPhone
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{98BA403C-5B59-4307-8ADB-477D4C05EBD2}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$1.ResourceNamePolicy = FileFormatDefault
+	EndGlobalSection
+EndGlobal

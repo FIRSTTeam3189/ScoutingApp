@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Scouty.UI.PerformancePage">
+	<ContentPage.Content>
+		<ScrollView Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Vertical">
+			<!-- The High Shot Layout -->
+				<StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" HeightRequest="80" Padding="0,20,0,5">
+					<ContentView Padding="10,0,10,0">
+						<Label Text="Shots High: " FontSize="16" VerticalTextAlignment="Center"/>
+					</ContentView>
+					<ContentView Padding="0,0,10,0" HorizontalOptions="FillAndExpand">
+						<Label Text="0/0" FontSize="16" VerticalTextAlignment="Center" x:Name="HighLabel"/>
+					</ContentView>
+					<Button Text=" Make High " HorizontalOptions="FillAndExpand" HeightRequest="60" BackgroundColor="Lime" x:Name="MakeHigh"/>
+					<Button Text=" Miss High " HorizontalOptions="FillAndExpand" HeightRequest="60" BackgroundColor="Red" x:Name="MissHigh"/>
+				</StackLayout>
+			<!-- End High Shot Layout -->
+
+				<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<!-- The Low Shot Layout -->
+				<StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" HeightRequest="80" Padding="0,5,0,5">
+					<ContentView Padding="10,0,10,0">
+						<Label Text="Shots Low: " FontSize="16" VerticalTextAlignment="Center"/>
+					</ContentView>
+					<ContentView Padding="0,0,10,0">
+						<Label Text="0/0" FontSize="16" VerticalTextAlignment="Center" x:Name="LowLabel"/>
+					</ContentView>
+					<Button Text="  Make Low  " HorizontalOptions="FillAndExpand" HeightRequest="60" BackgroundColor="Lime" x:Name="MakeLow"/>
+					<Button Text="  Miss Low  " HorizontalOptions="FillAndExpand" HeightRequest="60" BackgroundColor="Red" x:Name="MissLow"/>
+				</StackLayout>
+			<!-- End Low Shot Layout -->
+
+				<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<!-- Crossing Defense Layout -->
+				<StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" HeightRequest="130" Padding="0,5,0,10">
+					<Label Text="Crossing Of Defenses" FontSize="18" HorizontalOptions="Center" VerticalTextAlignment="Center" HeightRequest="30" />
+					<Grid HeightRequest="100" HorizontalOptions="FillAndExpand">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30" />
+							<RowDefinition Height="70" />
+						</Grid.RowDefinitions>
+
+						<Label Text="0" Grid.Column="0" HorizontalTextAlignment="Center" x:Name="CrossOneAmountLabel"/>
+						<Label Text="0" Grid.Column="1" HorizontalTextAlignment="Center" x:Name="CrossTwoAmountLabel"/>
+						<Label Text="0" Grid.Column="2" HorizontalTextAlignment="Center" x:Name="CrossThreeAmountLabel"/>
+						<Label Text="0" Grid.Column="3" HorizontalTextAlignment="Center" x:Name="CrossFourAmountLabel"/>
+						<Label Text="0" Grid.Column="4" HorizontalTextAlignment="Center" x:Name="CrossFiveAmountLabel"/>
+
+						<ContentView Grid.Column="0" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="One" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="CrossOneButton"/>
+						</ContentView>
+						<ContentView Grid.Column="1" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Two" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="CrossTwoButton"/>
+						</ContentView>
+						<ContentView Grid.Column="2" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Three" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="CrossThreeButton"/>
+						</ContentView>
+						<ContentView Grid.Column="3" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Four" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="CrossFourButton"/>
+						</ContentView>
+						<ContentView Grid.Column="4" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Five" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="CrossFiveButton"/>
+						</ContentView>
+					</Grid>
+				</StackLayout>
+			<!-- End Crossing Defense Layout -->
+
+			<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<!-- Assisting Defense Layout -->
+				<StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" HeightRequest="130" Padding="0,5,0,5">
+					<Label Text="Assisting Of Defenses" FontSize="18" HorizontalOptions="Center" VerticalTextAlignment="Center" HeightRequest="30" />
+					<Grid HeightRequest="100" HorizontalOptions="FillAndExpand">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="*"/>
+						</Grid.ColumnDefinitions>
+
+						<Grid.RowDefinitions>
+							<RowDefinition Height="30" />
+							<RowDefinition Height="70" />
+						</Grid.RowDefinitions>
+
+						<Label Text="0" Grid.Column="0" HorizontalTextAlignment="Center" x:Name="AssistOneAmountLabel"/>
+						<Label Text="0" Grid.Column="1" HorizontalTextAlignment="Center" x:Name="AssistTwoAmountLabel"/>
+						<Label Text="0" Grid.Column="2" HorizontalTextAlignment="Center" x:Name="AssistThreeAmountLabel"/>
+						<Label Text="0" Grid.Column="3" HorizontalTextAlignment="Center" x:Name="AssistFourAmountLabel"/>
+						<Label Text="0" Grid.Column="4" HorizontalTextAlignment="Center" x:Name="AssistFiveAmountLabel"/>
+
+						<ContentView Grid.Column="0" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="One" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="AssistOneButton"/>
+						</ContentView>
+						<ContentView Grid.Column="1" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Two" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="AssistTwoButton"/>
+						</ContentView>
+						<ContentView Grid.Column="2" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Three" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="AssistThreeButton"/>
+						</ContentView>
+						<ContentView Grid.Column="3" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Four" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="AssistFourButton"/>
+						</ContentView>
+						<ContentView Grid.Column="4" Grid.Row="1" Padding="5,0,5,0" HorizontalOptions="FillAndExpand">
+							<Button Text="Five" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="AssistFiveButton"/>
+						</ContentView>
+					</Grid>
+				</StackLayout>
+			<!-- End Assisting Defense Layout -->
+
+			<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<!-- Misc Options -->
+			<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="60" Spacing="5" Padding="0,5,0,5">
+				<Button HorizontalOptions="FillAndExpand" Text="Reach Defense" BackgroundColor="Silver" x:Name="ReachDefenseButton"/>
+				<Button HorizontalOptions="FillAndExpand" Text="Challenge" BackgroundColor="Silver" x:Name="ChallengeButton"/>
+				<Button HorizontalOptions="FillAndExpand" Text="Hang" BackgroundColor="Silver" x:Name="HangButton"/>
+			</StackLayout>
+			<!-- End Misc Options -->
+
+			<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<!-- Fouls and Mode Button -->
+			<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="60" Spacing="5" Padding="0,5,0,5">
+				<Button Text="Foul" HorizontalOptions="FillAndExpand" BackgroundColor="Red" x:Name="FoulButton" />
+				<Button Text="Technical Foul" HorizontalOptions="FillAndExpand" BackgroundColor="Maroon" x:Name="TechnicalFoulButton" />
+				<Button Text="Autonomous Mode" HorizontalOptions="FillAndExpand" BackgroundColor="Aqua" x:Name="ModeButton" />
+			</StackLayout>
+			<!-- End Fouls and Mode Button -->
+
+			<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
+
+			<Button Text="Submit" HeightRequest="60" HorizontalOptions="FillAndExpand" BackgroundColor="Lime" x:Name="SubmitButton"/>
+			</StackLayout>
+		</ScrollView>
+	</ContentPage.Content>
+</ContentPage>
