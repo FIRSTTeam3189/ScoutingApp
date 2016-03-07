@@ -54,9 +54,9 @@ namespace Scouty.Utility
 
 
 			if (level > 3)
-				Console.Error.WriteLine (tag + " " + className + " " + message);
+				Console.Error.WriteLine (tag + " [" + className + "] " + message);
 			else
-				Console.WriteLine (tag + " " + className + " " + message);
+				Console.WriteLine (tag + " [" + className + "] " + message);
 		}
 
 		void Log(string message, Exception e, int level){

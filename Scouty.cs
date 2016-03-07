@@ -7,6 +7,7 @@ using Scouty.Azure;
 using Scouty.Utility;
 using Scouty.Database;
 using Scouty.UI;
+using Scouty.Models.Local;
 
 namespace Scouty
 {
@@ -16,8 +17,9 @@ namespace Scouty
 
 		public App ()
 		{
+			Team testTeam = new Team (){ TeamNumber = 3189 };
 			// The root page of your application
-			MainPage = new NavigationPage(new PerformancePage());
+			MainPage = new NavigationPage(new PerformancePage(testTeam, 69));
 
 		}
 
@@ -48,10 +50,12 @@ namespace Scouty
 					logger.Info("Logged in!");
 					logger.Info("Getting events!");
 
-					var team = await TeamManager.GetTeam(3189);
+					var teams = await EventManager.MatchesForEvent("cada", 2015);
 
-					if (team != null)
-						logger.Info($"Number: {team.TeamNumber} Rookie Year: {team.RookieYear}");
+					if (teams != null)
+						foreach (var team in teams){
+							
+						}
 					else 
 						logger.Info("Failed to get the team");
 				}

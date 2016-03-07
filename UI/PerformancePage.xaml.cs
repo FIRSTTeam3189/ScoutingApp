@@ -72,9 +72,12 @@ namespace Scouty.UI
 			}
 		}
 
-		public PerformancePage ()
+		public PerformancePage (Team team, int matchNumber)
 		{
 			InitializeComponent ();
+
+			Title = $"Team {team.TeamNumber} : Match {matchNumber}";
+
 			MakeHigh.Clicked += (object sender, EventArgs e) => {
 				MadeHighShots++;
 				AddEvent(EventType.MakeHigh);
