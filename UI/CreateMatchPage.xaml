@@ -2,11 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Scouty.UI.CreateMatchPage">
 	<ContentPage.Content>
 		<StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-			<ListView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="TeamsList" IsGroupingEnabled="true"
-			GroupDisplayBinding="{Binding LongName}" GroupShortNameBinding="{Binding ShortName}">
+			<Grid HorizontalOptions="FillAndExpand" HeightRequest="100">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<StackLayout Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Red" x:Name="RedAlliance">
+					<Label Text="{Binding TeamOne}" />
+					<Label Text="{Binding TeamTwo}" />
+					<Label Text="{Binding TeamThree}" />
+				</StackLayout>
+
+				<StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Aqua" x:Name="BlueAlliance">
+					<Label Text="{Binding TeamOne}" />
+					<Label Text="{Binding TeamTwo}" />
+					<Label Text="{Binding TeamThree}" />
+				</StackLayout>
+			</Grid>
+			<ListView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="TeamsList">
 				<ListView.ItemTemplate>
 					<DataTemplate>
-						<TextCell Text="{Binding Name}"/>
+						<TextCell Text="{Binding TeamNumber}" Detail="{Binding TeamName}"/>
 					</DataTemplate>
 				</ListView.ItemTemplate>
 			</ListView>

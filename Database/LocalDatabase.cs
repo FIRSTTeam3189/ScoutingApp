@@ -92,6 +92,23 @@ namespace Scouty.Database
 
 			return ev;
 		}
+
+		/// <summary>
+		/// Queries the event teams.
+		/// </summary>
+		/// <returns>The event teams.</returns>
+		/// <param name="eventCode">Event code.</param>
+		/// <param name="year">Year.</param>
+		/// <param name="readTeamsInfo">If set to <c>true</c> read teams info.</param>
+		public IEnumerable<Team> QueryEventTeams(string eventCode, int year, bool readTeamsInfo = false){
+			var ev = (from e in Connection.Table<Event> ()
+			          where e.Year == year && e.EventCode == eventCode
+			          select e).First ();
+
+			Connection.GetChildren<Event> (ev, readTeamsInfo);
+
+			return ev.Teams;
+		}
 	}
 }
 

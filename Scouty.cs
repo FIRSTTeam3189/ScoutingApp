@@ -17,17 +17,18 @@ namespace Scouty
 
 		public App ()
 		{
-			Team testTeam = new Team (){ TeamNumber = 3189 };
+			Test.TestCreate ();
+			Test.TestCreateEvent ();
+
+			var team = LocalDatabase.Database.QueryTeam (3189);
+
 			// The root page of your application
-			MainPage = new NavigationPage(new PerformancePage(testTeam, 69));
+			MainPage = new NavigationPage(new PerformancePage(team, 34));
 
 		}
 
 		protected override void OnStart ()
 		{
-			Test.TestCreate ();
-			Test.TestCreateEvent ();
-
 			// Test Register
 			Task.Factory.StartNew(async () => {
 				logger.Info("Logging in...");

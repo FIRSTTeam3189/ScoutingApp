@@ -13,10 +13,17 @@ namespace Scouty.UI
 	{
 		static Logger logger = new Logger (typeof(ConfirmPerformancePage));
 		public ObservableCollection<GroupedRobotEvent> Groups { get; set; }
-		public ConfirmPerformancePage (IEnumerable<RobotEvent> events)
+
+		public event Action<RobotPerformance> ConfirmedPerformance;
+
+		public Team Team { get; }
+		public int MatchNumber { get; }
+
+		public ConfirmPerformancePage (IEnumerable<RobotEvent> events, Team team, int matchNumber)
 		{
 			InitializeComponent ();
-
+			Team = team;
+			MatchNumber = matchNumber;
 			var groups = events.GroupBy (x => x.EventTime, (k, ev) => new GroupedRobotEvent (k, ev));
 
 			Groups = new ObservableCollection<GroupedRobotEvent> ();
@@ -29,7 +36,19 @@ namespace Scouty.UI
 		}
 
 		void Confirm(){
-			
+			var events = Groups.Select (x => x);
+			var allThings = new List<RobotEvent> ();
+			foreach (var ev in events) {
+				foreach (var t in ev) {
+					allThings.Add (t.Event);
+				}
+			}
+
+			ConfirmedPerformance?.Invoke (new RobotPerformance () { 
+				Team = Team,
+				MatchNumber = MatchNumber,
+				Events = allThings
+			});
 		}
 
 		public async void SelectedEvent(object sender, SelectedItemChangedEventArgs e){

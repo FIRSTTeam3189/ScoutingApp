@@ -14,6 +14,12 @@ namespace Scouty.UI
 
 		EventTime currentTime = EventTime.Auto;
 
+		public event Action<RobotPerformance> PerformanceCreated;
+
+		public Team Team { get; }
+
+		public int MatchNumber { get; }
+
 		int makeHigh = 0;
 		int highShots = 0;
 		/// <summary>
@@ -75,7 +81,8 @@ namespace Scouty.UI
 		public PerformancePage (Team team, int matchNumber)
 		{
 			InitializeComponent ();
-
+			Team = team;
+			MatchNumber = matchNumber;
 			Title = $"Team {team.TeamNumber} : Match {matchNumber}";
 
 			MakeHigh.Clicked += (object sender, EventArgs e) => {
@@ -137,7 +144,7 @@ namespace Scouty.UI
 				}
 			};
 
-			SubmitButton.Clicked += async (object sender, EventArgs e) => await App.Current.MainPage.Navigation.PushAsync(new ConfirmPerformancePage(events));
+			SubmitButton.Clicked += async (object sender, EventArgs e) => await App.Current.MainPage.Navigation.PushAsync(new ConfirmPerformancePage(events, Team,MatchNumber));
 		}
 
 		/// <summary>

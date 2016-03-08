@@ -36,6 +36,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Local\Match.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Local\Event.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Local\EventTeam.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\SelectPerformance.xaml.cs">
+      <DependentUpon>SelectPerformance.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Utility\" />
@@ -57,6 +60,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\CreateMatchPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\SelectPerformance.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
