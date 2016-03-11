@@ -15,10 +15,13 @@ namespace Scouty.UI
 		EventTime currentTime = EventTime.Auto;
 
 		public event Action<RobotPerformance> PerformanceCreated;
+		public event Action NavigatedTo;
 
 		public Team Team { get; }
 
 		public int MatchNumber { get; }
+		public MatchType MatchType { get; }
+		public string EventCode { get; }
 
 		int makeHigh = 0;
 		int highShots = 0;
@@ -78,11 +81,13 @@ namespace Scouty.UI
 			}
 		}
 
-		public PerformancePage (Team team, int matchNumber)
+		public PerformancePage (Team team, int matchNumber, MatchType type, string eventCode)
 		{
 			InitializeComponent ();
 			Team = team;
 			MatchNumber = matchNumber;
+			MatchType = type;
+			EventCode = eventCode;
 			Title = $"Team {team.TeamNumber} : Match {matchNumber}";
 
 			MakeHigh.Clicked += (object sender, EventArgs e) => {
@@ -144,7 +149,32 @@ namespace Scouty.UI
 				}
 			};
 
-			SubmitButton.Clicked += async (object sender, EventArgs e) => await App.Current.MainPage.Navigation.PushAsync(new ConfirmPerformancePage(events, Team,MatchNumber));
+			SubmitButton.Clicked += SubmitButton_Clicked;
+		}
+
+		async void SubmitButton_Clicked (object sender, EventArgs e)
+		{
+			TaskCompletionSource<RobotPerformance> tcs = new TaskCompletionSource<RobotPerformance> ();
+			ConfirmPerformancePage page = new ConfirmPerformancePage (events, Team, MatchNumber, MatchType, EventCode);
+
+			NavigatedTo += () => {if (!tcs.Task.IsCanceled || !tcs.Task.IsCompleted) tcs.TrySetCanceled();};
+			page.ConfirmedPerformance += tcs.SetResult;
+
+			await Navigation.PushAsync (page);
+
+			try {
+				var performance = await tcs.Task;
+				PerformanceCreated?.Invoke(performance);
+			} catch (OperationCanceledException){
+				// Dont care here
+			}
+		}
+
+		protected override void OnAppearing ()
+		{
+			base.OnAppearing ();
+
+			NavigatedTo?.Invoke ();
 		}
 
 		/// <summary>

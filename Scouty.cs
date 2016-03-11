@@ -23,7 +23,7 @@ namespace Scouty
 			var team = LocalDatabase.Database.QueryTeam (3189);
 
 			// The root page of your application
-			MainPage = new NavigationPage(new PerformancePage(team, 34));
+			MainPage = new NavigationPage(new MatchesPage("cada", 2016));
 
 		}
 

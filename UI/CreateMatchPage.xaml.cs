@@ -91,6 +91,7 @@ namespace Scouty.UI
 				RedTwo = RedAllianceModel.ActualTeamTwo.TeamNumber,
 				RedThree = RedAllianceModel.ActualTeamThree.TeamNumber,
 				MatchNumber = MatchNumber,
+				MatchType = Type,
 				StartTime = DateTime.Now
 			});
 		}
@@ -131,6 +132,8 @@ namespace Scouty.UI
 		async void TeamSelected (object sender, SelectedItemChangedEventArgs e)
 		{
 			var team = e.SelectedItem as Team;
+			if (team == null)
+				return;
 			var action = await DisplayActionSheet ($"Which alliance would you like to add {team.TeamNumber} to?", "None", null, "Red", "Blue");
 
 			if (action == "Red") {

@@ -18,12 +18,16 @@ namespace Scouty.UI
 
 		public Team Team { get; }
 		public int MatchNumber { get; }
+		public MatchType MatchType { get; }
+		public string EventCode { get; }
 
-		public ConfirmPerformancePage (IEnumerable<RobotEvent> events, Team team, int matchNumber)
+		public ConfirmPerformancePage (IEnumerable<RobotEvent> events, Team team, int matchNumber, MatchType type, string eventCode)
 		{
 			InitializeComponent ();
 			Team = team;
 			MatchNumber = matchNumber;
+			MatchType = type;
+			EventCode = eventCode;
 			var groups = events.GroupBy (x => x.EventTime, (k, ev) => new GroupedRobotEvent (k, ev));
 
 			Groups = new ObservableCollection<GroupedRobotEvent> ();
@@ -47,6 +51,8 @@ namespace Scouty.UI
 			ConfirmedPerformance?.Invoke (new RobotPerformance () { 
 				Team = Team,
 				MatchNumber = MatchNumber,
+				MatchType = MatchType,
+				EventCode = EventCode,
 				Events = allThings
 			});
 		}
