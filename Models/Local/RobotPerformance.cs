@@ -3,6 +3,7 @@
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 using System.Collections.Generic;
+using Scouty.Azure;
 
 namespace Scouty.Models.Local
 {
@@ -29,6 +30,14 @@ namespace Scouty.Models.Local
 
 		[OneToMany(CascadeOperations = CascadeOperation.All), Column("events")]
 		public List<RobotEvent> Events { get; set; }
+	}
+
+	public static class RobotPerformanceExtensions {
+		public static RobotPerformance GetFromRemote(this ClientPerformance performance){
+			return new RobotPerformance{
+				
+			};
+		}
 	}
 }
 

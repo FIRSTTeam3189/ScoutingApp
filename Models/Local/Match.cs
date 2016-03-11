@@ -3,6 +3,7 @@
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 using System.Collections.Generic;
+using Scouty.Azure;
 
 namespace Scouty.Models.Local
 {
@@ -44,6 +45,22 @@ namespace Scouty.Models.Local
 
 		[Column("has_graded")]
 		public bool HasGraded { get; set; }
+	}
+
+	public static class MatchExtensions {
+		public static Match GetFromRemote(this ClientMatch match){
+			return new Match{ 
+				BlueOne = match.BlueOne,
+				BlueThree = match.BlueThree,
+				BlueTwo = match.BlueTwo,
+				MatchNumber = match.MatchNumber,
+				MatchType = match.MatchType,
+				RedOne = match.RedOne,
+				RedThree = match.RedThree,
+				RedTwo = match.RedTwo,
+				StartTime = DateTime.Now
+			};
+		}
 	}
 
 	public enum MatchType {

@@ -70,9 +70,22 @@ namespace Scouty.Database
 		/// <param name="eventCode">Event code.</param>
 		/// <param name = "year">Year of event</param>
 		public IEnumerable<Match> QueryMatches(string eventCode, int year){
-			var ev = Connection.Table<Event> ().Where(x => x.EventCode == eventCode && x.Year == year).First();
+			var ev = Connection.Table<Event> ().Where(x => x.EventCode == eventCode && x.Year == year).FirstOrDefault();
+
+			// Have to get matches from server
+			if (ev == null)
+				return null;
+
 			Connection.GetChildren<Event> (ev);
 			return ev.Matches;
+		}
+
+		public void AddTeam(Team team){
+			// Add the team if it doesn't exist
+			Team existTeam = QueryTeam(team.TeamNumber);
+
+			if (existTeam == null)
+				Connection.Insert (team);
 		}
 
 		/// <summary>

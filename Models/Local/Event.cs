@@ -3,6 +3,7 @@
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
 using System.Collections.Generic;
+using Scouty.Azure;
 
 namespace Scouty.Models.Local
 {
@@ -23,6 +24,17 @@ namespace Scouty.Models.Local
 
 		[ManyToMany(typeof(EventTeam), CascadeOperations = CascadeOperation.All), Column("teams")]
 		public List<Team> Teams { get; set; }
+	}
+
+	public static class EventExtensions {
+		public static Event GetLocalEventFromRemote(this ClientEvent ev){
+			return new Event { 
+				EventCode = ev.EventCode,
+				Matches = new List<Match>(),
+				Teams = new List<Team>(),
+				Year = ev.Year
+			};
+		}
 	}
 }
 

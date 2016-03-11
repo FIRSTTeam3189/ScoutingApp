@@ -6,6 +6,7 @@ using SQLiteNetExtensions.Extensions;
 
 using Scouty.Database;
 using Scouty.Models.Local;
+using Scouty.Azure;
 using Xamarin.Forms;
 using Scouty.Utility;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Scouty.UI
 	{
 		Logger logger = new Logger (typeof(MatchesPage));
 		ObservableCollection<GroupedMatches> Matches { get; set; }
+
 		public string EventCode { get; }
 		public int Year { get; }
 
@@ -24,6 +26,10 @@ namespace Scouty.UI
 		{
 			InitializeComponent ();
 			var matches = LocalDatabase.Database.QueryMatches (eventCode, year);
+
+			if (matches == null) {
+				matches = new List<Match> ();
+			}
 
 			EventCode = eventCode;
 			Year = year;
@@ -106,6 +112,74 @@ namespace Scouty.UI
 
 			} else if (action == "Refresh Matches") {
 				// Pull down matches from server
+				// Login first
+				logger.Info("Logging in...");
+				var loginState = await UserManager.Login("jameswomack", "1234qwery");
+
+				if (loginState != LoginState.Success){
+					logger.Info("Failed to login: " + loginState);
+
+					var registerState = await UserManager.CustomRegister("jameswomack", "1234qwery", "James Womack");
+
+					if (registerState == RegisterState.Success){
+						loginState = await UserManager.Login("jameswomack", "1234qwery");
+						if (loginState == LoginState.Success)
+							logger.Info ("Logged in!");
+						else {
+							logger.Error ("Failed to login: " + loginState);
+							return;
+						}
+					} else {
+						logger.Error("Failed to register: " + loginState);
+						return;
+					}
+				}
+
+				// Pull down the event
+				var ev = await EventManager.RefreshEvents(Year);
+				var thisEvent = ev.Where (x => x.EventCode == EventCode).Select(x => x.GetLocalEventFromRemote()).ToList();
+
+				// Pull down the teams
+				var teams = (await EventManager.TeamsForEvent(EventCode, Year)).Select(x => x.GetFromRemoteTeam(thisEvent)).ToList();
+
+				// Pull down the matches
+				var matches = await EventManager.MatchesForEvent(EventCode, Year);
+
+				if (matches != null) {
+					matches = new List<ClientMatch> ();
+				}
+
+				// Lets insert the data now!
+				if (teams != null && thisEvent != null){
+					Test.DeleteAllMatches (EventCode, Year);
+
+					var trueMatches = matches.Select (x => x.GetFromRemote ()).ToList ();
+					var db = LocalDatabase.Database.Connection;
+					db.InsertOrReplaceAll (thisEvent);
+					db.InsertAll (matches);
+
+					foreach (var team in teams) {
+						LocalDatabase.Database.AddTeam (team);
+					}
+
+					foreach (var e in thisEvent) {
+						e.Teams.AddRange (teams);
+						e.Matches.AddRange (trueMatches);
+					}
+
+					// Update the event now
+					db.UpdateWithChildren(thisEvent.First());
+
+					// Remove all the old ones
+					Matches.Clear();
+					var newMatches = new ObservableCollection<GroupedMatches> (trueMatches
+						.GroupBy (x => x.MatchType, (k, m) => new GroupedMatches (k, m)));
+					foreach (var grps in newMatches)
+						Matches.Add (grps);
+
+					await DisplayAlert ("Refreshed Events!", "Finished getting teams here!", "OK");
+				}
+
 			} else if (action == "Syncronize") {
 				// Put performances on server
 			} else

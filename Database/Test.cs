@@ -93,6 +93,14 @@ namespace Scouty.Database
 			db.Connection.DeleteAll<Team> ();
 		}
 
+		public static void DeleteAllMatches(string eventCode, int year){
+			var db = LocalDatabase.Database;
+			var con = db.Connection;
+
+			var matches = db.QueryMatches (eventCode, year);
+			con.DeleteAll (matches, true);
+		}
+
 		public static void DropAllTables(){
 			var db = LocalDatabase.Database;
 
