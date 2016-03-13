@@ -39,7 +39,15 @@ namespace Scouty.UI
 				.GroupBy (x => x.MatchType, (k, m) => new GroupedMatches (k, m)));
 			MatchList.ItemsSource = Matches;
 			MatchList.ItemSelected += Match_Selected;
+			ViewPerformancesButton.Clicked += ViewPerformances_Clicked;
 			ToolbarItems.Add(new ToolbarItem("Other", null, OtherPressed));
+		}
+
+		async void ViewPerformances_Clicked (object sender, EventArgs e)
+		{
+			// Create the page
+			var performancePage = new ViewPerformancesPage(EventCode);
+			await Navigation.PushAsync (performancePage);
 		}
 
 		async void Match_Selected (object sender, SelectedItemChangedEventArgs e)
@@ -68,14 +76,14 @@ namespace Scouty.UI
 
 		async void OtherPressed ()
 		{
-			var action = await DisplayActionSheet ("What would you like to do?", "Nothing", null, "Create Match", "Refresh Matches", "Syncronize");
+			var action = await DisplayActionSheet ("What would you like to do?", "Nothing", null, "Create Match", "Refresh Matches", "Syncronize", "Test Get Performances");
 
 			if (action == "Nothing")
 				logger.Debug ("Nothing selected");
 			else if (action == "Create Match") {
 				// Create a match
-				var tcs = new TaskCompletionSource<Match>();
-				var page = new CreateMatchPage(EventCode, Year, Matches.Count == 0 ? 1 : Matches.Max(x => x.Max(y => y.Match.MatchNumber)) + 1);
+				var tcs = new TaskCompletionSource<Match> ();
+				var page = new CreateMatchPage (EventCode, Year, Matches.Count == 0 ? 1 : Matches.Max (x => x.Max (y => y.Match.MatchNumber)) + 1);
 
 				page.MatchCreated += tcs.SetResult;
 				NavigatedTo += () => {
@@ -89,27 +97,57 @@ namespace Scouty.UI
 				try {
 					var match = await tcs.Task;
 					var db = LocalDatabase.Database.Connection;
-					var grp = Matches.FirstOrDefault(x => x.Type == match.MatchType);
+					var grp = Matches.FirstOrDefault (x => x.Type == match.MatchType);
 
-					if (grp == null){
-						grp = new GroupedMatches(match.MatchType, new List<Match>());
-						Matches.Add(grp);
+					if (grp == null) {
+						grp = new GroupedMatches (match.MatchType, new List<Match> ());
+						Matches.Add (grp);
 					}
 
-					grp.Add(new MatchUI(match));
+					grp.Add (new MatchUI (match));
 
 					// Get the event
-					var ev = LocalDatabase.Database.QueryEvent(EventCode, Year, false);
-					db.Insert(match);
-					ev.Matches.Add(match);
-					db.UpdateWithChildren(ev);
+					var ev = LocalDatabase.Database.QueryEvent (EventCode, Year, false);
+					db.Insert (match);
+					ev.Matches.Add (match);
+					db.UpdateWithChildren (ev);
 
 					// Go back to this page
-					await Navigation.PopAsync();
-				} catch (OperationCanceledException){
+					await Navigation.PopAsync ();
+				} catch (OperationCanceledException) {
 					// Ignore this shizniz
 				}
 
+			} else if (action == "Test Get Performances") {
+				// Login first
+				logger.Info("Logging in...");
+				var loginState = await UserManager.Login("jameswomack", "1234qwery");
+
+				if (loginState != LoginState.Success){
+					logger.Info("Failed to login: " + loginState);
+
+					var registerState = await UserManager.CustomRegister("jameswomack", "1234qwery", "James Womack");
+
+					if (registerState == RegisterState.Success){
+						loginState = await UserManager.Login("jameswomack", "1234qwery");
+						if (loginState == LoginState.Success)
+							logger.Info ("Logged in!");
+						else {
+							logger.Error ("Failed to login: " + loginState);
+							return;
+						}
+					} else {
+						logger.Error("Failed to register: " + loginState);
+						return;
+					}
+				}
+
+				var perfs = await PerformanceManager.GetPerformances (EventCode);
+				if (perfs != null) {
+					foreach (var perf in perfs) {
+						logger.Info ($"{perf.TeamId} {perf.Events == null} {perf?.Events.Count ?? 0}");
+					}
+				}
 			} else if (action == "Refresh Matches") {
 				// Pull down matches from server
 				// Login first
@@ -145,7 +183,7 @@ namespace Scouty.UI
 				// Pull down the matches
 				var matches = await EventManager.MatchesForEvent(EventCode, Year);
 
-				if (matches != null) {
+				if (matches == null) {
 					matches = new List<ClientMatch> ();
 				}
 
@@ -153,10 +191,10 @@ namespace Scouty.UI
 				if (teams != null && thisEvent != null){
 					Test.DeleteAllMatches (EventCode, Year);
 
-					var trueMatches = matches.Select (x => x.GetFromRemote ()).ToList ();
+					var trueMatches = matches.OrderBy(x => x.MatchNumber).Select (x => x.GetFromRemote ()).ToList ();
 					var db = LocalDatabase.Database.Connection;
 					db.InsertOrReplaceAll (thisEvent);
-					db.InsertAll (matches);
+					db.InsertAll (trueMatches);
 
 					foreach (var team in teams) {
 						LocalDatabase.Database.AddTeam (team);
@@ -181,7 +219,37 @@ namespace Scouty.UI
 				}
 
 			} else if (action == "Syncronize") {
+				// Login first
+				logger.Info("Logging in...");
+				var loginState = await UserManager.Login("jameswomack", "1234qwery");
+
+				if (loginState != LoginState.Success){
+					logger.Info("Failed to login: " + loginState);
+
+					var registerState = await UserManager.CustomRegister("jameswomack", "1234qwery", "James Womack");
+
+					if (registerState == RegisterState.Success){
+						loginState = await UserManager.Login("jameswomack", "1234qwery");
+						if (loginState == LoginState.Success)
+							logger.Info ("Logged in!");
+						else {
+							logger.Error ("Failed to login: " + loginState);
+							return;
+						}
+					} else {
+						logger.Error("Failed to register: " + loginState);
+						return;
+					}
+				}
+
 				// Put performances on server
+				var perfs = LocalDatabase.Database.GetPerformances(EventCode);
+				var didIt = await PerformanceManager.PostPerformances (perfs.ToList());
+
+				if (didIt)
+					await DisplayAlert ("Syncronize", "Completed Syncronize", "OK");
+				else
+					await DisplayAlert ("Syncronize", "Failed", "OK");
 			} else
 				logger.Error ("This shouldn't happen");
 		}

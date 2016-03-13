@@ -25,6 +25,7 @@ namespace Scouty.Models.Local
 
 		[ManyToMany(typeof(EventTeam), CascadeOperations = CascadeOperation.All), Column("events")]
 		public List<Event> Events { get; set; }
+
 	}
 
 	public static class TeamExtensions {

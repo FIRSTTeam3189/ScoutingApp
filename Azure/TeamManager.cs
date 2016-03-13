@@ -40,8 +40,5 @@ namespace Scouty.Azure
 		public ICollection<ClientPerformance> TeamPerformance { get; set; }
 	}
 
-	public class ClientPerformance {
-		
-	}
 }
 

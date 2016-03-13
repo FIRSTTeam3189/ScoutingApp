@@ -1,4 +1,5 @@
 ﻿using System;
+using Scouty.Azure;
 
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
@@ -48,6 +49,15 @@ namespace Scouty.Models.Local
 		Foul = 18,
 		TechnicalFoul = 19,
 		BlockedShot = 20
+	}
+
+	public static class RobotEventExtensions {
+		public static ClientRobotEvent ToRemote(this RobotEvent ev){
+			return new ClientRobotEvent { 
+				EventTime = ev.EventTime,
+				EventType = ev.EventType
+			};
+		}
 	}
 }
 

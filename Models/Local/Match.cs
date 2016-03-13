@@ -49,6 +49,8 @@ namespace Scouty.Models.Local
 
 	public static class MatchExtensions {
 		public static Match GetFromRemote(this ClientMatch match){
+			System.DateTime dtDateTime = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc);
+			dtDateTime = dtDateTime.AddSeconds( match.Time ).ToLocalTime();
 			return new Match{ 
 				BlueOne = match.BlueOne,
 				BlueThree = match.BlueThree,
@@ -58,7 +60,7 @@ namespace Scouty.Models.Local
 				RedOne = match.RedOne,
 				RedThree = match.RedThree,
 				RedTwo = match.RedTwo,
-				StartTime = DateTime.Now
+				StartTime = dtDateTime
 			};
 		}
 	}

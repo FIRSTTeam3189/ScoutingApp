@@ -24,7 +24,7 @@ namespace Scouty.Droid
 			Console.WriteLine ("DATABASE PATH: " + dbPath);
 			LocalDatabase.Initialize (dbPath, new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid ());
 
-			Scouty.Azure.AzureManager.Init ("https://team3189scoutingapp.azurewebsites.net");
+			Scouty.Azure.AzureManager.Init ("https://team3189scouting.azurewebsites.net");
 
 			global::Xamarin.Forms.Forms.Init (this, bundle);
 

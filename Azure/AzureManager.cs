@@ -2,6 +2,7 @@
 using Microsoft.WindowsAzure.MobileServices;
 using Scouty.Utility;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Scouty.Azure
 {
@@ -41,6 +42,10 @@ namespace Scouty.Azure
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
 		public static async Task<T> InvokeApiAsync<T>(string api){
 			return await Client.InvokeApiAsync<T> (api);
+		}
+
+		public static async Task<T> InvokeGetApiAsync<T>(string api, IDictionary<string, string> parameters){
+			return await Client.InvokeApiAsync<T> (api, System.Net.Http.HttpMethod.Get, parameters);
 		}
 	}
 }

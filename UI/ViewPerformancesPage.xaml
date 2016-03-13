@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Scouty.UI.ViewPerformancesPage">
+	<ContentPage.Content>
+	<StackLayout Orientation="Vertical">
+		<ListView x:Name="PerformancesList" IsGroupingEnabled="true" GroupShortNameBinding="{Binding ShortName}" 
+			GroupDisplayBinding="{Binding LongName}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<TextCell Text="{Binding Name}" Detail="{Binding Detail}" />
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

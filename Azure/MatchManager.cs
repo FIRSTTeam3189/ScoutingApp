@@ -16,6 +16,7 @@ namespace Scouty.Azure
 		public int BlueOne { get; set; }
 		public int BlueTwo { get; set; }
 		public int BlueThree { get; set; }
+		public int Time { get; set; }
 	}
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using SQLite.Net.Attributes;
 using SQLiteNetExtensions.Attributes;
@@ -36,6 +37,17 @@ namespace Scouty.Models.Local
 		public static RobotPerformance GetFromRemote(this ClientPerformance performance){
 			return new RobotPerformance{
 				
+			};
+		}
+
+		public static ClientPerformance ToRemote(this RobotPerformance performance){
+			return new ClientPerformance { 
+				EventCode = performance.EventCode,
+				Events = performance.Events.Select(x => x.ToRemote()).ToList(),
+				MatchNumber = performance.MatchNumber,
+				MatchType = performance.MatchType,
+				LastUpdated = DateTimeOffset.Now,
+				TeamId = performance.Team.TeamNumber
 			};
 		}
 	}

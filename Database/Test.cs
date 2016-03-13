@@ -110,6 +110,12 @@ namespace Scouty.Database
 			db.Connection.DropTable<Match> ();
 			db.Connection.DropTable<Event> ();
 			db.Connection.DropTable<Team> ();
+			db.Connection.CreateTable<EventTeam> ();
+			db.Connection.CreateTable<RobotEvent> ();
+			db.Connection.CreateTable<RobotPerformance> ();
+			db.Connection.CreateTable<Match> ();
+			db.Connection.CreateTable<Event> ();
+			db.Connection.CreateTable<Team> ();
 		}
 
 	}

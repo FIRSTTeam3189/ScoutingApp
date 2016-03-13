@@ -39,11 +39,11 @@ namespace Scouty.Database
 		/// </summary>
 		/// <returns>The team, if its in the DB.</returns>
 		/// <param name="teamNumber">Team number.</param>
-		public Team QueryTeam(int teamNumber){
+		public Team QueryTeam(int teamNumber, bool getChildren = true){
 			var team = (from t in Connection.Table<Team> ()
 			            where t.TeamNumber == teamNumber
 			            select t).FirstOrDefault ();
-			if (team != null)
+			if (team != null && getChildren)
 				Connection.GetChildren<Team> (team);
 
 			return team;
@@ -80,12 +80,23 @@ namespace Scouty.Database
 			return ev.Matches;
 		}
 
+		public IEnumerable<RobotPerformance> GetPerformances(string eventCode){
+			return Connection.GetAllWithChildren<RobotPerformance> (x => x.EventCode == eventCode, true);
+		}
+
+		/// <summary>
+		/// Adds the team, if it doesnt already exist. Sets the Id if it already exists
+		/// </summary>
+		/// <param name="team">Team.</param>
 		public void AddTeam(Team team){
 			// Add the team if it doesn't exist
 			Team existTeam = QueryTeam(team.TeamNumber);
 
 			if (existTeam == null)
 				Connection.Insert (team);
+			else {
+				team.Id = existTeam.Id;
+			}
 		}
 
 		/// <summary>
