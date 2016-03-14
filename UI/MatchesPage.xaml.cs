@@ -119,35 +119,7 @@ namespace Scouty.UI
 				}
 
 			} else if (action == "Test Get Performances") {
-				// Login first
-				logger.Info("Logging in...");
-				var loginState = await UserManager.Login("jameswomack", "1234qwery");
-
-				if (loginState != LoginState.Success){
-					logger.Info("Failed to login: " + loginState);
-
-					var registerState = await UserManager.CustomRegister("jameswomack", "1234qwery", "James Womack");
-
-					if (registerState == RegisterState.Success){
-						loginState = await UserManager.Login("jameswomack", "1234qwery");
-						if (loginState == LoginState.Success)
-							logger.Info ("Logged in!");
-						else {
-							logger.Error ("Failed to login: " + loginState);
-							return;
-						}
-					} else {
-						logger.Error("Failed to register: " + loginState);
-						return;
-					}
-				}
-
-				var perfs = await PerformanceManager.GetPerformances (EventCode);
-				if (perfs != null) {
-					foreach (var perf in perfs) {
-						logger.Info ($"{perf.TeamId} {perf.Events == null} {perf?.Events.Count ?? 0}");
-					}
-				}
+				await DoScoutingStuffs ();
 			} else if (action == "Refresh Matches") {
 				// Pull down matches from server
 				// Login first
@@ -253,6 +225,144 @@ namespace Scouty.UI
 			} else
 				logger.Error ("This shouldn't happen");
 		}
+
+		async Task DoScoutingStuffs ()
+		{
+			// Login first
+			logger.Info("Logging in...");
+			var loginState = await UserManager.Login("jameswomack", "1234qwery");
+
+			if (loginState != LoginState.Success){
+				logger.Info("Failed to login: " + loginState);
+
+				var registerState = await UserManager.CustomRegister("jameswomack", "1234qwery", "James Womack");
+
+				if (registerState == RegisterState.Success){
+					loginState = await UserManager.Login("jameswomack", "1234qwery");
+					if (loginState == LoginState.Success)
+						logger.Info ("Logged in!");
+					else {
+						logger.Error ("Failed to login: " + loginState);
+						return;
+					}
+				} else {
+					logger.Error("Failed to register: " + loginState);
+					return;
+				}
+			}
+
+			var perfs = (await PerformanceManager.GetPerformances (EventCode)).Where(x => x.MatchType != MatchType.Practice).ToList();
+			if (perfs != null) {
+				var groupedPerfs = perfs.GroupBy (x => x.TeamId, (k, x) => new GroupedClientPerformance (k, x.ToList ())).ToList();
+
+				var mostActive = groupedPerfs.OrderByDescending (x => x.AverageEventCount);
+				var mostCrossing = groupedPerfs.OrderByDescending (x => x.AverageCrossCount);
+				var mostShooting = groupedPerfs.OrderByDescending (x => x.AverageShootCount);
+				logger.Info ("\n\n\n---------------------");
+				logger.Info ("|     MOST ACTIVE   |");
+				logger.Info ("---------------------\n");
+				foreach (var grp in mostActive) {
+					PrintPerformance (grp);
+				}
+
+				logger.Info ("\n\n\n---------------------");
+				logger.Info ("|   MOST CROSSING  |");
+				logger.Info ("---------------------\n");
+				foreach (var grp in mostCrossing) {
+					PrintPerformance (grp);
+				}
+
+				logger.Info ("\n\n\n---------------------");
+				logger.Info ("|   MOST SHOOTING  |");
+				logger.Info ("---------------------\n");
+				foreach (var grp in mostShooting) {
+					PrintPerformance (grp);
+				}
+			}
+		}
+
+		public void PrintPerformance(GroupedClientPerformance perf){
+			logger.Info ($"Team Number: {perf.TeamNumber}");
+			logger.Info ("\n---- Event Counts ------ ");
+			logger.Info ($"Event Count: {perf.EventCount}");
+			logger.Info ($"Performance Count: {perf.PerformanceCount}");
+			logger.Info ($"Shoot Count: {perf.ShootCount}");
+			logger.Info ($"High Shot Count: {perf.HighShotCount}");
+			logger.Info ($"Low Shot Count: {perf.HighShotCount}");
+			logger.Info ($"Challenge Count: {perf.ChallengeCount}");
+			logger.Info ($"Autonomous Count: {perf.AutonomousCount}");
+			logger.Info ($"Cross Count: {perf.CrossCount}\n");
+			logger.Info ("----- Stat Info -----");
+			logger.Info ($"Average Event Count: {perf.AverageEventCount}");
+			logger.Info ($"Average Cross Count: {perf.AverageCrossCount}");
+			logger.Info ($"Average Shot Count: {perf.AverageShootCount}");
+			logger.Info ($"Average High Shot Count: {perf.AverageHighShotCount}");
+			logger.Info ($"Average Low Shot Count: {perf.AverageLowShotCount}");
+			logger.Info ($"Average Autonomous Count: {perf.AverageAutonomousCount}");
+			logger.Info ($"Shooting Percentage High: {perf.ShootingPercentageHigh}");
+			logger.Info ($"Shooting Percentage Low: {perf.ShootingPercentageLow}\n");
+			logger.Info ($"Challenge Differential: {perf.ChallengeDifferential}");
+			logger.Info ("***********************************************");
+			foreach (var p in perf.Performances) {
+				logger.Info ("------ Match: " + p.MatchNumber + ", Event Count: " + p.Events.Count);
+			}
+			logger.Info ("***********************************************\n\n\n");
+		}
+	}
+
+	public struct GroupedClientPerformance {
+		public GroupedClientPerformance(int teamNumber, List<ClientPerformance> perfs){
+			// Get all of the robot Events
+			var events = perfs.SelectMany(x => x.Events).ToList();
+			TeamNumber = teamNumber;
+			Performances = perfs;
+			EventCount = perfs.Sum (y => y.Events.Count);
+			PerformanceCount = perfs.Count == 0 ? 0 : perfs.Count;
+			ShootCount = events.Count (x => x.EventType == EventType.MakeHigh || x.EventType == EventType.MissLow || x.EventType == EventType.MakeLow || x.EventType == EventType.MissHigh);
+			HighShotCount = events.Count (x => x.EventType == EventType.MakeHigh || x.EventType == EventType.MissHigh);
+			LowShotCount = events.Count (x => x.EventType == EventType.MakeLow || x.EventType == EventType.MissLow);
+			ChallengeCount = events.Count (x => x.EventType == EventType.Challenge);
+			AutonomousCount = events.Count (x => x.EventTime == EventTime.Auto || x.EventType == EventType.ReachDefense);
+			CrossCount = events.Count (x => x.EventType == EventType.AssistFive || x.EventType == EventType.AssistFour || x.EventType == EventType.AssistOne
+			|| x.EventType == EventType.AssistThree || x.EventType == EventType.AssistTwo || x.EventType == EventType.CrossFive || x.EventType == EventType.CrossFour
+			|| x.EventType == EventType.CrossOne || x.EventType == EventType.CrossThree || x.EventType == EventType.CrossTwo);
+			FoulCount = events.Count (x => x.EventType == EventType.Foul || x.EventType == EventType.TechnicalFoul);
+			HangCount = events.Count (x => x.EventType == EventType.Hang);
+
+			AverageEventCount = perfs.Average (y => y.Events.Count);
+			AverageCrossCount = CrossCount / (double)PerformanceCount;
+			AverageShootCount = ShootCount / (double)PerformanceCount;
+			AverageHighShotCount = HighShotCount / (double)PerformanceCount;
+			AverageLowShotCount = LowShotCount / (double)PerformanceCount;
+			AverageAutonomousCount = AutonomousCount / (double)PerformanceCount;
+
+			ShootingPercentageHigh = events.Count (x => x.EventType == EventType.MakeHigh) / (double)HighShotCount;
+			ShootingPercentageLow = events.Count (x => x.EventType == EventType.MakeLow) / (double)LowShotCount;
+			ChallengeDifferential = PerformanceCount - ChallengeCount;
+		}
+
+		public int TeamNumber { get; set; }
+		public List<ClientPerformance> Performances { get; set; }
+		public int EventCount { get; set; }
+		public int CrossCount { get; set; }
+		public int ShootCount { get; set; }
+		public int HighShotCount { get; set; }
+		public int LowShotCount { get; set; }
+		public int AutonomousCount { get; set; }
+		public int FoulCount { get; set; }
+		public int ChallengeCount { get; set; }
+		public int HangCount { get; set; }
+		public int PerformanceCount { get; set; }
+
+		public double AverageEventCount { get; set; }
+		public double AverageCrossCount { get; set; }
+		public double AverageShootCount { get; set; }
+		public double AverageHighShotCount { get; set; }
+		public double AverageLowShotCount { get; set; }
+		public double AverageAutonomousCount { get; set; }
+		public double ShootingPercentageHigh { get; set; }
+		public double ShootingPercentageLow { get; set; }
+		public int ChallengeDifferential { get; set; }
 	}
 
 	public class MatchUI {
