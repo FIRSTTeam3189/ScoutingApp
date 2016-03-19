@@ -29,26 +29,60 @@ namespace Scouty.Models.Local
 	}
 
 	public enum EventType {
-		MakeLow = 1,
-		MakeHigh = 2,
-		MissLow = 3,
-		MissHigh = 4,
-		CrossOne = 5,
-		CrossTwo = 6,
-		CrossThree = 7,
-		CrossFour = 8,
-		CrossFive = 9,
-		AssistOne = 10,
-		AssistTwo = 11,
-		AssistThree = 12,
-		AssistFour = 13,
-		AssistFive = 14,
-		ReachDefense = 15,
-		Challenge = 16,
-		Hang = 17,
-		Foul = 18,
-		TechnicalFoul = 19,
-		BlockedShot = 20
+		// Making Goals
+		MakeLow 			  = 1,
+		MakeLowUnderPressure  = 2,
+		MakeHigh 			  = 3,
+		MakeHighUnderPressure = 4,
+
+		// Missing Goals
+		MissLow 			  = 5,
+		MissLowUnderPressure  = 6,
+		MissHigh			  = 7,
+		MissHighUnderPressure = 8,
+
+		// Crossing Defenses
+		CrossLowBar 		  = 9,
+		CrossPortcullis 	  = 10,
+		CrossChivalDeFrise    = 11,
+		CrossMoat 			  = 12,
+		CrossRamparts 		  = 13,
+		CrossSallyPort 		  = 14,
+		CrossDrawBridge 	  = 15,
+		CrossRockWall 		  = 16,
+		CrossRoughTerrain 	  = 17,
+
+		// Assisting Defenses
+		AssistPortcullis	  = 18,
+		AssistChivalDeFrise   = 19,
+		AssistMoat 			  = 20,
+		AssistRamparts 		  = 21,
+		AssistSallyPort		  = 22,
+		AssistDrawBridge	  = 23,
+		AssistRockWall		  = 24,
+		AssistRoughTerrain    = 25,
+		AssistLowBar		  = 26,
+		AssistedCross		  = 27,
+
+		// Other Offensive Categories
+		ReachDefense		  = 28,
+		Challenge			  = 29,
+		Hang				  = 30,
+		FailedHang            = 31,
+
+		// Robot Bad Things
+		Foul				  = 32,
+		TechnicalFoul		  = 33,
+		RobotFailure 		  = 34,
+
+		// Block Shots
+		BlockedShotOne	   	  = 35,
+		BlockedShotTwo		  = 36,
+		BlockedShotThree 	  = 37,
+		FailedBlockShotOne    = 38,
+		FailedBlockShotTwo    = 39,
+		FailedBlockShotThree  = 40,
+		StealBall = 41,
 	}
 
 	public static class RobotEventExtensions {
