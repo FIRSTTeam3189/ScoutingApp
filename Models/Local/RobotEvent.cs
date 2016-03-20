@@ -44,7 +44,7 @@ namespace Scouty.Models.Local
 		// Crossing Defenses
 		CrossLowBar 		  = 9,
 		CrossPortcullis 	  = 10,
-		CrossChivalDeFrise    = 11,
+		CrossChevalDeFrise    = 11,
 		CrossMoat 			  = 12,
 		CrossRamparts 		  = 13,
 		CrossSallyPort 		  = 14,
@@ -54,7 +54,7 @@ namespace Scouty.Models.Local
 
 		// Assisting Defenses
 		AssistPortcullis	  = 18,
-		AssistChivalDeFrise   = 19,
+		AssistChevalDeFrise   = 19,
 		AssistMoat 			  = 20,
 		AssistRamparts 		  = 21,
 		AssistSallyPort		  = 22,

@@ -132,16 +132,8 @@ namespace Scouty.UI
 
 			Time = time;
 
-			if (time == EventTime.Auto) {
-				ShortName = "A";
-				LongName = "Autonomous Period";
-			} else if (time == EventTime.Final) {
-				ShortName = "F";
-				LongName = "Final Period";
-			} else {
-				ShortName = "T";
-				LongName = "Teleop Period";
-			}
+			ShortName = time.GetEventTimeShortString();
+			LongName = time.GetEventTimeString();
 		}
 	}
 
@@ -153,48 +145,7 @@ namespace Scouty.UI
 			Event = associatedEvent;
 
 			// Get the string assoiciated with the event
-			if (associatedEvent.EventType == EventType.AssistFive)
-				Type = "Assist on Slot Five";
-			else if (associatedEvent.EventType == EventType.AssistFour)
-				Type = "Assist on Slot Four";
-			else if (associatedEvent.EventType == EventType.AssistThree)
-				Type = "Assist on Slot Three";
-			else if (associatedEvent.EventType == EventType.AssistTwo)
-				Type = "Assist on Slot Two";
-			else if (associatedEvent.EventType == EventType.AssistOne)
-				Type = "Assist on Slot One";
-			else if (associatedEvent.EventType == EventType.BlockedShot)
-				Type = "Blocked Shot";
-			else if (associatedEvent.EventType == EventType.Challenge)
-				Type = "Challenged Defense";
-			else if (associatedEvent.EventType == EventType.CrossFive)
-				Type = "Crossed Slot Five";
-			else if (associatedEvent.EventType == EventType.CrossFour)
-				Type = "Crossed Slot Four";
-			else if (associatedEvent.EventType == EventType.CrossThree)
-				Type = "Crossed Slot Three";
-			else if (associatedEvent.EventType == EventType.CrossTwo)
-				Type = "Crossed Slot Two";
-			else if (associatedEvent.EventType == EventType.CrossOne)
-				Type = "Crossed Slot One";
-			else if (associatedEvent.EventType == EventType.Foul)
-				Type = "FOUL!";
-			else if (associatedEvent.EventType == EventType.Hang)
-				Type = "Robot Hung";
-			else if (associatedEvent.EventType == EventType.MakeHigh)
-				Type = "Made a High Goal";
-			else if (associatedEvent.EventType == EventType.MissHigh)
-				Type = "Missed a High Goal";
-			else if (associatedEvent.EventType == EventType.MakeLow)
-				Type = "Made a Low Goal";
-			else if (associatedEvent.EventType == EventType.MissLow)
-				Type = "Missed Low Goal";
-			else if (associatedEvent.EventType == EventType.ReachDefense)
-				Type = "Reached The Defense";
-			else if (associatedEvent.EventType == EventType.TechnicalFoul)
-				Type = "TECHNICAL FOUL!!";
-			else
-				Type = "This is a bug....";
+			Type = associatedEvent.GetEventTypeString ();
 		}
 	}
 }

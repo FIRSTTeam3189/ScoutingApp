@@ -43,6 +43,7 @@
       <DependentUpon>ViewPerformancesPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Azure\PerformanceManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Strings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Utility\" />
