@@ -323,9 +323,7 @@ namespace Scouty.UI
 			LowShotCount = events.Count (x => x.EventType == EventType.MakeLow || x.EventType == EventType.MissLow);
 			ChallengeCount = events.Count (x => x.EventType == EventType.Challenge);
 			AutonomousCount = events.Count (x => x.EventTime == EventTime.Auto || x.EventType == EventType.ReachDefense);
-			CrossCount = events.Count (x => x.EventType == EventType.AssistFive || x.EventType == EventType.AssistFour || x.EventType == EventType.AssistOne
-			|| x.EventType == EventType.AssistThree || x.EventType == EventType.AssistTwo || x.EventType == EventType.CrossFive || x.EventType == EventType.CrossFour
-			|| x.EventType == EventType.CrossOne || x.EventType == EventType.CrossThree || x.EventType == EventType.CrossTwo);
+			CrossCount = 0;
 			FoulCount = events.Count (x => x.EventType == EventType.Foul || x.EventType == EventType.TechnicalFoul);
 			HangCount = events.Count (x => x.EventType == EventType.Hang);
 
@@ -394,25 +392,8 @@ namespace Scouty.UI
 				Add (new MatchUI(match));
 			}
 
-			if (type == MatchType.Final) {
-				ShortName = "F";
-				LongName = "Finals";
-			} else if (type == MatchType.OctoFinal) {
-				ShortName = "OF";
-				LongName = "Octo Finals";
-			} else if (type == MatchType.Practice) {
-				ShortName = "P";
-				LongName = "Practice";
-			} else if (type == MatchType.Qualification) {
-				ShortName = "Q";
-				LongName = "Qualification";
-			} else if (type == MatchType.QuarterFinal) {
-				ShortName = "QF";
-				LongName = "Quarter Final";
-			} else {
-				ShortName = "SF";
-				LongName = "Semi Finals";
-			}
+			ShortName = type.GetMatchTypeShortString ();
+			LongName = type.GetMatchTypeString ();
 		}
 	}
 }

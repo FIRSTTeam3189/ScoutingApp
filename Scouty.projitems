@@ -44,6 +44,9 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Azure\PerformanceManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utility\Strings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\SelectDefensePage.xaml.cs">
+      <DependentUpon>SelectDefensePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Utility\" />
@@ -71,6 +74,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\ViewPerformancesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)UI\SelectDefensePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

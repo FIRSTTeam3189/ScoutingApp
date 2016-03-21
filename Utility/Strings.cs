@@ -101,6 +101,8 @@ namespace Scouty.Utility
 					str += " during Teleop";
 				}
 			}
+
+			return str;
 		}
 
 		/// <summary>
