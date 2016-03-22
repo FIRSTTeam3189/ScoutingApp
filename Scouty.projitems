@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\SelectDefensePage.xaml.cs">
       <DependentUpon>SelectDefensePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Utility\Statistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Utility\" />

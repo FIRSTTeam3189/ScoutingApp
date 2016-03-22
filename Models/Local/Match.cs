@@ -73,5 +73,25 @@ namespace Scouty.Models.Local
 		SemiFinal = 5,
 		Final = 6
 	}
+
+	public enum DefenseType {
+		Portcullis,
+		ChevalDeFrise,
+		Moat,
+		Ramparts,
+		Drawbridge,
+		SallyPort,
+		RockWall,
+		RoughTerrain,
+		LowBar
+	}
+
+	public enum DefenseCategory {
+		A,
+		B,
+		C,
+		D,
+		LowBar
+	}
 }
 

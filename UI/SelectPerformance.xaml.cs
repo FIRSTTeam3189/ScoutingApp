@@ -37,10 +37,16 @@ namespace Scouty.UI
 
 		async void TeamSelected (object sender, SelectedItemChangedEventArgs e)
 		{
+			var team = e.SelectedItem as Team;
+			if (team == null)
+				return;
+
+			TeamsList.SelectedItem = null;
+
 			// Simply navigate to a team performance page
 			var tcs = new TaskCompletionSource<RobotPerformance>();
 
-			var page = new PerformancePage (e.SelectedItem as Team, MatchNumber, MatchType, EventCode);
+			var page = new SelectDefensePage (team, MatchNumber, MatchType, EventCode);
 			page.PerformanceCreated += tcs.SetResult;
 			NavigatedTo += () => {
 				if (!tcs.Task.IsCanceled || !tcs.Task.IsCompleted)
@@ -62,7 +68,8 @@ namespace Scouty.UI
 
 				logger.Debug("Added performance to team!");
 
-				// Go back twice
+				// Go back thrice
+				await Navigation.PopAsync();
 				await Navigation.PopAsync();
 				await Navigation.PopAsync();
 			} catch (OperationCanceledException){

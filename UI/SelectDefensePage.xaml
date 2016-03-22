@@ -1,6 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Scouty.UI.SelectDefensePage">
 	<ContentPage.Content>
+		<StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="Silver">
+				<StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" x:Name="SelectedDefensesTwoThree">
+					<Button Text="{Binding DefenseTwo}"   TextColor="Yellow" BackgroundColor="Transparent" x:Name="DefenseTwoButton"/>
+					<Button Text="{Binding DefenseThree}" TextColor="Yellow" BackgroundColor="Transparent" x:Name="DefenseThreeButton"/>
+				</StackLayout>
+				<StackLayout Orientation="Vertical" HorizontalOptions="FillAndExpand" x:Name="SelectedDefensesFourFive">
+					<Button Text="{Binding DefenseFour}" TextColor="Yellow" BackgroundColor="Transparent" x:Name="DefenseFourButton"/>
+					<Button Text="{Binding DefenseFive}" TextColor="Yellow" BackgroundColor="Transparent" x:Name="DefenseFiveButton"/>
+				</StackLayout>
+			</StackLayout>
 
+			<ListView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsGroupingEnabled="true" 
+				x:Name="Defenses" GroupDisplayBinding="{Binding LongName}" GroupShortNameBinding="{Binding ShortName}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<TextCell Text="{Binding Name}" />
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

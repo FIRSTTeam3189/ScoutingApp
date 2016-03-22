@@ -155,6 +155,34 @@ namespace Scouty.Utility
 		}
 
 		/// <summary>
+		/// Gets the defense type string.
+		/// </summary>
+		/// <returns>The defense type string.</returns>
+		/// <param name="type">Type.</param>
+		public static string GetDefenseTypeString(this DefenseType type){
+			if (type == DefenseType.ChevalDeFrise)
+				return "Cheval de Frise";
+			else if (type == DefenseType.Drawbridge)
+				return "Drawbridge";
+			else if (type == DefenseType.LowBar)
+				return "Low Bar";
+			else if (type == DefenseType.Moat)
+				return "Moat";
+			else if (type == DefenseType.Portcullis)
+				return "Portcullis";
+			else if (type == DefenseType.Ramparts)
+				return "Ramparts";
+			else if (type == DefenseType.RockWall)
+				return "Rock Wall";
+			else if (type == DefenseType.RoughTerrain)
+				return "Rough Terrain";
+			else if (type == DefenseType.SallyPort)
+				return "Sally Port";
+			else
+				return "Bug Getting Defense";
+		}
+
+		/// <summary>
 		/// Gets the match type short string.
 		/// </summary>
 		/// <returns>The match type short string.</returns>

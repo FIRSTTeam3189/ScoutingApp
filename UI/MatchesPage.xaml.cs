@@ -52,8 +52,15 @@ namespace Scouty.UI
 
 		async void Match_Selected (object sender, SelectedItemChangedEventArgs e)
 		{
+			var matchUI = e.SelectedItem as MatchUI;
+
+			if (matchUI == null)
+				return;
+
+			MatchList.SelectedItem = null;
+
 			// Get the match selected
-			var match = (e.SelectedItem as MatchUI).Match;
+			var match = matchUI.Match;
 
 			// Go to select performance page after getting all of the teams together
 			var db = LocalDatabase.Database;
