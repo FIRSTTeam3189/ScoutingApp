@@ -17,6 +17,7 @@ namespace Scouty.UI
 
 		public event Action<RobotPerformance> PerformanceCreated;
 		public event Action NavigatedTo;
+		public event Action<IList<RobotEvent>> NavigatedBack;
 
 		public Team Team { get; }
 
@@ -25,17 +26,24 @@ namespace Scouty.UI
 		public string EventCode { get; }
 		public IList<DefenseType> Defenses { get; }
 
-		public PerformancePage (Team team, int matchNumber, MatchType type, string eventCode, IList<DefenseType> defenses)
+		public PerformancePage (Team team, int matchNumber, MatchType type, string eventCode, IList<DefenseType> defenses, IList<Team> otherAlliance)
 		{
 			InitializeComponent ();
 			Team = team;
 			MatchNumber = matchNumber;
 			MatchType = type;
 			EventCode = eventCode;
-			Title = $"Team {team.TeamNumber} : Match {matchNumber}";
+			Page1Title.Text = $"Team {team.TeamNumber} : Match {matchNumber}";
+			Page2Title.Text = $"Team {team.TeamNumber} : Match {matchNumber}";
+			Page3Title.Text = $"Team {team.TeamNumber} : Match {matchNumber}";
+			Page4Title.Text = $"Team {team.TeamNumber} : Match {matchNumber}";
 
 			CurrentPage = this.Children[1];
 			Defenses = defenses;
+			events = new List<RobotEvent> ();
+
+			// Save the state if needed
+			Disappearing += (object sender, EventArgs e) => NavigatedBack?.Invoke(events);
 
 			// Set the texts
 			CategoryACross.Text = defenses [1].GetDefenseTypeString ();
@@ -46,6 +54,12 @@ namespace Scouty.UI
 			CategoryBAssist.Text = defenses [2].GetDefenseTypeString ();
 			CategoryCAssist.Text = defenses [3].GetDefenseTypeString ();
 			CategoryDAssist.Text = defenses [4].GetDefenseTypeString ();
+			BlockedOne.Text = otherAlliance [0].TeamNumber + "";
+			BlockedTwo.Text = otherAlliance [1].TeamNumber + "";
+			BlockedThree.Text = otherAlliance [2].TeamNumber + "";
+			FailedBlockedOne.Text = otherAlliance [0].TeamNumber + "";
+			FailedBlockedTwo.Text = otherAlliance [1].TeamNumber + "";
+			FailedBlockedThree.Text = otherAlliance [2].TeamNumber + "";
 
 			// Setup the buttons
 			// Crosses
@@ -54,7 +68,7 @@ namespace Scouty.UI
 			CategoryBCross.Clicked += (object sender, EventArgs e) => AddDefenseEvent(defenses[2], true);
 			CategoryCCross.Clicked += (object sender, EventArgs e) => AddDefenseEvent(defenses[3], true);
 			CategoryDCross.Clicked += (object sender, EventArgs e) => AddDefenseEvent(defenses[4], true);
-			AssistedCross.Clicked += (object sender, EventArgs e) => AddEventAndIncrement(CrossCount, EventType.AssistedCross);
+			AssistedCross.Clicked += (object sender, EventArgs e) => AddEvent(EventType.AssistedCross);
 
 			// Assists
 			LowBarAssist.Clicked += (object sender, EventArgs e) => AddDefenseEvent(DefenseType.LowBar, false);
@@ -64,8 +78,26 @@ namespace Scouty.UI
 			CategoryDAssist.Clicked += (object sender, EventArgs e) => AddDefenseEvent(defenses[4], false);
 
 			// Add Fouls
-			Foul.Clicked += (object sender, EventArgs e) => AddEventAndIncrement(FoulCount, EventType.Foul);
-			TechnicalFoul.Clicked += (object sender, EventArgs e) => AddEventAndIncrement(FoulCount, EventType.TechnicalFoul);
+			Foul.Clicked += (object sender, EventArgs e) => AddEvent(EventType.Foul);
+			TechnicalFoul.Clicked += (object sender, EventArgs e) => AddEvent(EventType.TechnicalFoul);
+
+			// Setup Block Buttions
+			BlockedOne.Clicked += (object sender, EventArgs e) => AddEvent (EventType.BlockedShotOne);
+			BlockedTwo.Clicked += (object sender, EventArgs e) => AddEvent (EventType.BlockedShotTwo);
+			BlockedThree.Clicked += (object sender, EventArgs e) => AddEvent (EventType.BlockedShotThree);
+			FailedBlockedOne.Clicked += (object sender, EventArgs e) => AddEvent (EventType.FailedBlockShotOne);
+			FailedBlockedTwo.Clicked += (object sender, EventArgs e) => AddEvent (EventType.FailedBlockShotTwo);
+			FailedBlockedThree.Clicked += (object sender, EventArgs e) => AddEvent (EventType.FailedBlockShotThree);
+
+			// Setup Goal Buttons
+			MakeHigh.Clicked += (object sender, EventArgs e) => AddEvent(EventType.MakeHigh);
+			MakeLow.Clicked += (object sender, EventArgs e) => AddEvent (EventType.MakeLow);
+			ContestedMakeHigh.Clicked += (object sender, EventArgs e) => AddEvent(EventType.MakeHighUnderPressure);
+			ContestedMakeLow.Clicked += (object sender, EventArgs e) => AddEvent (EventType.MakeLowUnderPressure);
+			MissHigh.Clicked += (object sender, EventArgs e) => AddEvent (EventType.MissHigh);
+			MissLow.Clicked += (object sender, EventArgs e) => AddEvent (EventType.MissLow);
+			ContestedMissHigh.Clicked += (object sender, EventArgs e) => AddEvent(EventType.MissHighUnderPressure);
+			ContestedMissLow.Clicked += (object sender, EventArgs e) => AddEvent (EventType.MissLowUnderPressure);
 
 			// Mode Button
 			ModeButton.Clicked += (object sender, EventArgs e) => {
@@ -89,6 +121,65 @@ namespace Scouty.UI
 			Challenge.Clicked += (object sender, EventArgs e) => ToggleEvent(Challenge, EventType.Challenge);
 			YesHung.Clicked += (object sender, EventArgs e) => ToggleHang(false);
 			NoHung.Clicked += (object sender, EventArgs e) => ToggleHang (true);
+
+			// Other buttons
+			Next.Clicked += SubmitButton_Clicked;
+			Back.Clicked += async (object sender, EventArgs e) => await Navigation.PopModalAsync ();
+		}
+
+		/// <summary>
+		/// Calculates the success fail label (0/0 labels).
+		/// </summary>
+		/// <param name="label">Label.</param>
+		/// <param name="success">Success.</param>
+		/// <param name="fail">Fail.</param>
+		void CalculateSuccessFailLabel(Label label, EventType success, EventType fail){
+			var successes = events.Count (x => x.EventType == success);
+			var fails = events.Count (x => x.EventType == fail);
+			var total = successes + fails;
+
+			label.Text = successes + "/" + total;
+		}
+
+		/// <summary>
+		/// Calculates the counter label.
+		/// </summary>
+		/// <param name="label">Label.</param>
+		/// <param name="types">Types.</param>
+		void CalculateCounterLabel(Label label, IEnumerable<EventType> types){
+			var count = 0;
+			foreach (var type in types) {
+				count += events.Count (x => x.EventType == type);
+			}
+
+			label.Text = count + "";
+		}
+
+		/// <summary>
+		/// Recalculates the labels.
+		/// </summary>
+		void RecalculateLabels(){
+			// Calculate 0/0 Labels
+			CalculateSuccessFailLabel (HighGoalCount, EventType.MakeHigh, EventType.MissHigh);
+			CalculateSuccessFailLabel (ContestedHighGoalCount, EventType.MakeHighUnderPressure, EventType.MissHighUnderPressure);
+			CalculateSuccessFailLabel (LowGoalCount, EventType.MakeLow, EventType.MissLow);
+			CalculateSuccessFailLabel (ContestedLowGoalCount, EventType.MakeLowUnderPressure, EventType.MissLowUnderPressure);
+			CalculateSuccessFailLabel (TeamOneBlockCount, EventType.BlockedShotOne, EventType.FailedBlockShotOne);
+			CalculateSuccessFailLabel (TeamTwoBlockCount, EventType.BlockedShotTwo, EventType.FailedBlockShotTwo);
+			CalculateSuccessFailLabel (TeamThreeBlockCount, EventType.BlockedShotThree, EventType.FailedBlockShotThree);
+
+			// Calculate Counters
+			CalculateCounterLabel (StealCount, new []{ EventType.StealBall });
+			CalculateCounterLabel (FoulCount, new [] { EventType.Foul, EventType.TechnicalFoul });
+			CalculateCounterLabel (CrossCount, new [] { EventType.CrossChevalDeFrise, EventType.CrossDrawBridge, EventType.CrossLowBar,
+				EventType.CrossMoat, EventType.CrossPortcullis, EventType.CrossRamparts, EventType.CrossRockWall, EventType.CrossRoughTerrain,
+				EventType.CrossSallyPort, EventType.AssistedCross
+			});
+			CalculateCounterLabel (AssistCount, new [] { EventType.AssistChevalDeFrise, EventType.AssistDrawBridge, EventType.AssistLowBar,
+				EventType.AssistMoat, EventType.AssistPortcullis, EventType.AssistRamparts, EventType.AssistRockWall, EventType.AssistRoughTerrain,
+				EventType.AssistSallyPort
+			});
+
 		}
 
 		async void SubmitButton_Clicked (object sender, EventArgs e)
@@ -99,13 +190,16 @@ namespace Scouty.UI
 			NavigatedTo += () => {if (!tcs.Task.IsCanceled || !tcs.Task.IsCompleted) tcs.TrySetCanceled();};
 			page.ConfirmedPerformance += tcs.SetResult;
 
-			await Navigation.PushAsync (page);
+			await Navigation.PushModalAsync (page);
 
 			try {
 				var performance = await tcs.Task;
+				await Navigation.PopModalAsync();
 				PerformanceCreated?.Invoke(performance);
 			} catch (OperationCanceledException){
 				// Dont care here
+			} catch(Exception ex){
+				Console.WriteLine (ex.Message);
 			}
 		}
 
@@ -114,6 +208,7 @@ namespace Scouty.UI
 			base.OnAppearing ();
 
 			NavigatedTo?.Invoke ();
+			RecalculateLabels ();
 		}
 
 		/// <summary>
@@ -154,16 +249,6 @@ namespace Scouty.UI
 		}
 
 		/// <summary>
-		/// Adds an event and updates the label given
-		/// </summary>
-		/// <param name="label">Label.</param>
-		/// <param name="type">Type.</param>
-		void AddEventAndIncrement(Label label, EventType type){
-			label.Text = int.Parse (label.Text) + 1 + "";
-			AddEvent (type);
-		}
-
-		/// <summary>
 		/// Adds the defense event.
 		/// </summary>
 		/// <param name="type">Type.</param>
@@ -192,9 +277,9 @@ namespace Scouty.UI
 			} 
 
 			if (isCross)
-				AddEventAndIncrement (CrossCount, ev);
+				AddEvent (ev);
 			else
-				AddEventAndIncrement (AssistCount, ev);
+				AddEvent (ev);
 		}
 
 		/// <summary>
@@ -203,6 +288,12 @@ namespace Scouty.UI
 		/// <param name="type">Type.</param>
 		void AddEvent(EventType type){
 			events.Add (new RobotEvent{ EventTime = currentTime, EventType = type });
+			RecalculateLabels ();
+		}
+
+		async void SubmitClicked ()
+		{
+			
 		}
 	}
 }

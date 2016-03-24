@@ -88,6 +88,8 @@ namespace Scouty.Utility
 				str = "Stole a ball";
 			} else if (ev.EventType == EventType.TechnicalFoul) {
 				str = "Technical Foul";
+			} else if (ev.EventType == EventType.FailedHang) {
+				str = "Failed Hang";
 			} else {
 				str = "This is a bug...";
 			}

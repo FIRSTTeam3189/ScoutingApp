@@ -24,8 +24,9 @@ namespace Scouty.UI
 		public int MatchNumber { get; }
 		public MatchType MatchType { get; }
 		public string EventCode { get; }
+		public IList<Team> OtherAlliance { get; }
 
-		public SelectDefensePage (Team team, int matchNumber, MatchType type, string eventCode)
+		public SelectDefensePage (Team team, int matchNumber, MatchType type, string eventCode, IList<Team> otherAlliance)
 		{
 			InitializeComponent ();
 
@@ -37,6 +38,7 @@ namespace Scouty.UI
 			MatchNumber = matchNumber;
 			MatchType = type;
 			EventCode = eventCode;
+			OtherAlliance = otherAlliance;
 
 			// Generate GroupedDefenses
 			var a = new List<DefenseType> () {
@@ -65,7 +67,7 @@ namespace Scouty.UI
 			Defenses.ItemsSource = GroupedDefenses;
 
 			// Setup Submit Button
-			ToolbarItems.Add(new ToolbarItem("Submit", null, SubmitClicked));
+			ToolbarItems.Add(new ToolbarItem("Next", null, SubmitClicked));
 
 			// Setup all the other buttons
 			DefenseTwoButton.Clicked += async (object sender, EventArgs e) => await ChangeDefense(2);
@@ -123,7 +125,7 @@ namespace Scouty.UI
 			// Simply navigate to a team performance page
 			var tcs = new TaskCompletionSource<RobotPerformance>();
 
-			var page = new PerformancePage (Team, MatchNumber, MatchType, EventCode, Selection.GetDefensesSelected().ToList());
+			var page = new PerformancePage (Team, MatchNumber, MatchType, EventCode, Selection.GetDefensesSelected().ToList(), OtherAlliance);
 			page.PerformanceCreated += tcs.SetResult;
 			NavigatedTo += () => {
 				if (!tcs.Task.IsCanceled || !tcs.Task.IsCompleted)
@@ -131,9 +133,11 @@ namespace Scouty.UI
 			};
 
 			// Lets try to create the performance
-			await Navigation.PushAsync(page);
+			await Navigation.PushModalAsync(page);
 			try {
-				PerformanceCreated?.Invoke(await tcs.Task);
+				var perf = await tcs.Task;
+				await Navigation.PopModalAsync();
+				PerformanceCreated?.Invoke(perf);
 			} catch(OperationCanceledException){
 				// Dont care here
 			} catch (Exception e){

@@ -36,10 +36,11 @@ namespace Scouty.UI
 			
 			EventList.ItemsSource = Groups;
 			EventList.ItemSelected += SelectedEvent;
-			ToolbarItems.Add (new ToolbarItem ("Submit", null, Confirm));
+			Next.Clicked += Confirm;
+			Back.Clicked += async (object sender, EventArgs e) => await Navigation.PopModalAsync ();
 		}
 
-		void Confirm(){
+		void Confirm(object sender, EventArgs e){
 			var events = Groups.Select (x => x);
 			var allThings = new List<RobotEvent> ();
 			foreach (var ev in events) {

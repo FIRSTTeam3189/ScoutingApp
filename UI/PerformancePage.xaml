@@ -2,7 +2,8 @@
 <CarouselPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Scouty.UI.PerformancePage">
 	<ContentPage>
 		<ContentPage.Content>
-			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0,20,0,0">
+				<Label Text="" FontSize="20" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="Page1Title"/>
 				<Label Text="Match Setup" FontSize="18" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
 				<Button Text="Autonomous" BackgroundColor="Aqua" x:Name="ModeButton" HorizontalOptions="FillAndExpand" HeightRequest="60"/>
 
@@ -13,8 +14,13 @@
 
 				<Label Text="Hung:" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
 				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="60">
-					<Button Text="Yes" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="YesHung"/>
-					<Button Text="No" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="NoHung"/>
+					<Button Text="Success" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="YesHung"/>
+					<Button Text="Failed" BackgroundColor="Silver" HorizontalOptions="FillAndExpand" x:Name="NoHung"/>
+				</StackLayout>
+				<Label Text="Navigation Options" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="60">
+					<Button Text="Back" BackgroundColor="Red" TextColor="Black" HorizontalOptions="FillAndExpand" x:Name="Back"/>
+					<Button Text="Next" BackgroundColor="Green" TextColor="Silver" HorizontalOptions="FillAndExpand" x:Name="Next"/>
 				</StackLayout>
 			</StackLayout>
 		</ContentPage.Content>
@@ -23,7 +29,8 @@
 	<!-- Crossing OF Defenses -->
 	<ContentPage>
 		<ContentPage.Content>
-			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0,20,0,0">
+				<Label Text="" FontSize="20" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="Page2Title"/>
 				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
 					<Label Text="Total Crosses: " FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" />
 					<Label Text="0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" x:Name="CrossCount" />
@@ -66,22 +73,29 @@
 	<!-- Shooting Into Goals -->
 	<ContentPage>
 		<ContentPage.Content>
-			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0,20,0,0">
+				<Label Text="" FontSize="20" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="Page3Title"/>
 				<Label Text="High Goal Offense" FontSize="18" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
-				<Label Text="High Goals: 0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="HighGoalCount"/>
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+					<Label Text="0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="HighGoalCount"/>
+					<Label Text="0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="ContestedHighGoalCount"/>
+				</StackLayout>
 				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="60" Padding="0,5,0,5">
 					<Button Text="Make High" HorizontalOptions="FillAndExpand" BackgroundColor="Green" x:Name="MakeHigh" TextColor="Purple"/>
 					<Button Text="Defended High" HorizontalOptions="FillAndExpand" BackgroundColor="Lime" x:Name="ContestedMakeHigh" TextColor="Purple"/>
 				</StackLayout>
 				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="60" Padding="0,5,0,5">
 					<Button Text="Miss High" HorizontalOptions="FillAndExpand" BackgroundColor="Maroon" x:Name="MissHigh" TextColor="Aqua" />
-					<Button Text="Defended High" HorizontalOptions="FillAndExpand" BackgroundColor="Red" x:Name="ContestedMissHigh" TextColor="Aqua" />
+					<Button Text="Miss Def. High" HorizontalOptions="FillAndExpand" BackgroundColor="Red" x:Name="ContestedMissHigh" TextColor="Aqua" />
 				</StackLayout>
 
 				<ContentView HorizontalOptions="FillAndExpand" HeightRequest="3" BackgroundColor="Black" />
 
 				<Label Text="Low Goal Offense" FontSize="18" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
-				<Label Text="Low Goals: 0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="LowGoalCount"/>
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+					<Label Text="0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="LowGoalCount"/>
+					<Label Text="0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="ContestedLowGoalCount"/>
+				</StackLayout>
 				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" HeightRequest="60" Padding="0,5,0,5">
 					<Button Text="Make Low" HorizontalOptions="FillAndExpand" BackgroundColor="Green" x:Name="MakeLow" TextColor="Purple"/>
 					<Button Text="Defended Low" HorizontalOptions="FillAndExpand" BackgroundColor="Lime" x:Name="ContestedMakeLow" TextColor="Purple"/>
@@ -98,7 +112,8 @@
 	<!-- Defense -->
 	<ContentPage>
 		<ContentPage.Content>
-			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+			<StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="0,20,0,0">
+				<Label Text="" FontSize="20" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="Page4Title"/>
 				<Label Text="Blocking Defense" FontSize="18" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
 				<StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
 					<Label Text="0/0" FontSize="14" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" x:Name="TeamOneBlockCount"/>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -21,13 +22,18 @@ namespace Scouty.UI
 		public int MatchNumber { get; }
 		public MatchType MatchType { get; }
 		public string EventCode { get; }
+		public IList<Team> RedAlliance { get; }
+		public IList<Team> BlueAlliance { get; }
 
-		public SelectPerformance (IEnumerable<Team> teams, int matchNumber, MatchType type, string eventCode)
+		public SelectPerformance (IEnumerable<Team> teams, int matchNumber, MatchType type, string eventCode, IList<Team> redAlliance, IList<Team> blueAlliance)
 		{
 			InitializeComponent ();
 
 			Teams = new ObservableCollection<Team> (teams);
 			TeamsList.ItemsSource = Teams;
+
+			RedAlliance = redAlliance;
+			BlueAlliance = blueAlliance;
 
 			TeamsList.ItemSelected += TeamSelected;
 			MatchNumber = matchNumber;
@@ -46,7 +52,14 @@ namespace Scouty.UI
 			// Simply navigate to a team performance page
 			var tcs = new TaskCompletionSource<RobotPerformance>();
 
-			var page = new SelectDefensePage (team, MatchNumber, MatchType, EventCode);
+			// Get the other alliance
+			IList<Team> otherAlliance;
+			if (RedAlliance.FirstOrDefault (x => x.TeamNumber == team.TeamNumber) != null)
+				otherAlliance = BlueAlliance;
+			else
+				otherAlliance = RedAlliance;
+
+			var page = new SelectDefensePage (team, MatchNumber, MatchType, EventCode, otherAlliance);
 			page.PerformanceCreated += tcs.SetResult;
 			NavigatedTo += () => {
 				if (!tcs.Task.IsCanceled || !tcs.Task.IsCompleted)
@@ -69,7 +82,6 @@ namespace Scouty.UI
 				logger.Debug("Added performance to team!");
 
 				// Go back thrice
-				await Navigation.PopAsync();
 				await Navigation.PopAsync();
 				await Navigation.PopAsync();
 			} catch (OperationCanceledException){

@@ -71,7 +71,15 @@ namespace Scouty.UI
 			var team5 = db.QueryTeam (match.BlueTwo);
 			var team6 = db.QueryTeam (match.BlueThree);
 
-			var page = new SelectPerformance (new List<Team> () { team1, team2, team3, team4, team5, team6 }, match.MatchNumber, match.MatchType, EventCode);
+			var redAlliance = new List<Team> () {
+				team1, team2, team3
+			};
+			var blueAlliance = new List<Team> () { 
+				team4, team5, team6
+			};
+
+			var page = new SelectPerformance (new List<Team> () { team1, team2, team3, team4, team5, team6 }, 
+				           match.MatchNumber, match.MatchType, EventCode, redAlliance, blueAlliance);
 			await Navigation.PushAsync (page);
 		}
 
